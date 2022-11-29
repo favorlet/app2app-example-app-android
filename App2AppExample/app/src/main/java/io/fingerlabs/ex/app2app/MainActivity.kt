@@ -29,17 +29,17 @@ class MainActivity : AppCompatActivity() {
                 goToFavorletApp2App(it.peekContent())
             }
             connectedAddress.observe(this@MainActivity) {
-                binding.textConnectedAddress.text = "연결된 지갑주소\n$it"
+                binding.textConnectedAddress.text = it
                 binding.editParams.setText("[\"$it\",\"0x1707Cc19778A773c45C1EA03f62482481d3c0fBD\",\"10\"]")
             }
             signatureHash.observe(this@MainActivity) {
-                binding.textSignature.text = "서명된 해시값\n$it"
+                binding.textSignature.text = it
             }
             resultSendCoin.observe(this@MainActivity, EventObserver{
-                binding.textSendCoinResult.text = "전송결과 : $it"
+                binding.textSendCoinResult.text = it
             })
             resultExecuteContract.observe(this@MainActivity, EventObserver{
-                binding.textExecuteContractResult.text = "실행결과 : $it"
+                binding.textExecuteContractResult.text = it
             })
 
             progress.observe(this@MainActivity, EventObserver {

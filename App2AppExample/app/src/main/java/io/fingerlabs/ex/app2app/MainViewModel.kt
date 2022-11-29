@@ -24,6 +24,7 @@ class MainViewModel @Inject constructor(
     val resultExecuteContract = MutableLiveData<Event<String>>()
 
     val progress = MutableLiveData<Event<Boolean>>()
+    val isConnectedWallet = MutableLiveData<Event<Boolean>>()
 
     fun requestConnectWallet(chainId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -42,6 +43,7 @@ class MainViewModel @Inject constructor(
             }.onSuccess {
                 if (it.error == null && !(it.requestId.isNullOrEmpty())) {
                     app2AppRequestId.postValue(Event(it.requestId))
+                    isConnectedWallet.postValue(Event(true))
                 }
                 progress.postValue(Event(false))
             }.onFailure {
