@@ -1,8 +1,9 @@
 package io.fingerlabs.lib.app2app.domain.usecase
 
 import io.fingerlabs.lib.app2app.data.repository.App2AppRepository
-import io.fingerlabs.lib.app2app.data.source.remote.model.App2AppExecuteContractRequest
-import io.fingerlabs.lib.app2app.data.source.remote.model.App2AppExecuteContractResponse
+import io.fingerlabs.lib.app2app.data.source.remote.model.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RequestExecuteContractUseCase constructor(
     private val app2AppRepository: App2AppRepository = App2AppRepository()
@@ -10,6 +11,8 @@ class RequestExecuteContractUseCase constructor(
 
     suspend operator fun invoke(
         request: App2AppExecuteContractRequest
-    ): App2AppExecuteContractResponse = app2AppRepository.requestExecuteContract(request)
+    ): App2AppRequestResponse = withContext(Dispatchers.IO) {
+        app2AppRepository.requestExecuteContract(request)
+    }
 
 }

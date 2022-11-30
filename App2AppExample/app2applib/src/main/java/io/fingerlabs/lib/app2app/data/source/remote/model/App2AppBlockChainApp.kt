@@ -9,8 +9,8 @@ data class App2AppBlockChainApp(
     val name: String,
 
     @SerialName("successAppLink")
-    val successAppLink: String,
+    val successAppLink: String? = null,
 
     @SerialName("failAppLink")
-    val failAppLink: String
+    val failAppLink: String? = null,
 )

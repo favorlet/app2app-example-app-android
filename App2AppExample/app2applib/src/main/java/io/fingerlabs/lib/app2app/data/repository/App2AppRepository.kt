@@ -12,7 +12,7 @@ class App2AppRepository constructor(
      */
     suspend fun requestConnectWallet(
         request: App2AppConnectWalletRequest
-    ): App2AppConnectWalletResponse {
+    ): App2AppRequestResponse {
         return app2appApi.requestConnectWallet(request)
     }
 
@@ -22,7 +22,7 @@ class App2AppRepository constructor(
      */
     suspend fun requestSignMessage(
         request: App2AppSignMessageRequest
-    ): App2AppSignMessageResponse {
+    ): App2AppRequestResponse {
         return app2appApi.requestSignMessage(request)
     }
 
@@ -32,7 +32,7 @@ class App2AppRepository constructor(
      */
     suspend fun requestSendCoin(
         request: App2AppSendCoinRequest
-    ): App2AppSendCoinResponse {
+    ): App2AppRequestResponse {
         return app2appApi.requestSendCoin(request)
     }
 
@@ -42,7 +42,7 @@ class App2AppRepository constructor(
      */
     suspend fun requestExecuteContract(
         request: App2AppExecuteContractRequest
-    ): App2AppExecuteContractResponse {
+    ): App2AppRequestResponse {
         return app2appApi.requestExecuteContract(request)
     }
 

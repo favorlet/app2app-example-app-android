@@ -11,23 +11,22 @@ class App2AppApi constructor(
 
     suspend fun requestConnectWallet(
         request: App2AppConnectWalletRequest
-    ): App2AppConnectWalletResponse =
+    ): App2AppRequestResponse =
         httpClient.post(path = "/request", body = request)
-
 
     suspend fun requestSignMessage(
         request: App2AppSignMessageRequest
-    ): App2AppSignMessageResponse =
+    ): App2AppRequestResponse =
         httpClient.post(path = "/request", body = request)
 
     suspend fun requestSendCoin(
         request: App2AppSendCoinRequest
-    ): App2AppSendCoinResponse =
+    ): App2AppRequestResponse =
         httpClient.post(path = "/request", body = request)
 
     suspend fun requestExecuteContract(
         request: App2AppExecuteContractRequest
-    ): App2AppExecuteContractResponse =
+    ): App2AppRequestResponse =
         httpClient.post(path = "/request", body = request)
 
 
@@ -37,7 +36,5 @@ class App2AppApi constructor(
         httpClient.get(path = "/receipt") {
             parameter("requestId", requestId)
         }
-
-
 
 }
