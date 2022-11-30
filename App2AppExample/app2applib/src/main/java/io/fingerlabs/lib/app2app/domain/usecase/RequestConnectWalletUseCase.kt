@@ -6,7 +6,7 @@ import io.fingerlabs.lib.app2app.data.source.remote.model.App2AppRequestResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RequestConnectWalletUseCase constructor(
+internal class RequestConnectWalletUseCase constructor(
     private val app2AppRepository: App2AppRepository = App2AppRepository()
 ) {
 

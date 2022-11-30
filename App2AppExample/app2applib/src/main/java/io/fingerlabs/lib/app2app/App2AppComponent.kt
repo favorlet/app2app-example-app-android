@@ -31,7 +31,7 @@ class App2AppComponent {
     ): App2AppRequestResponse = requestExecuteContractUseCase.invoke(request)
 
 
-    suspend fun requestReceipt(
+    suspend fun receipt(
         requestId: String
     ): App2AppReceiptResponse = receiptUseCase.invoke(requestId)
 

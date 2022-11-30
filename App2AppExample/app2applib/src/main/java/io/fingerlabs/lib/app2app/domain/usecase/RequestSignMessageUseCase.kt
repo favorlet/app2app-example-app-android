@@ -5,7 +5,7 @@ import io.fingerlabs.lib.app2app.data.source.remote.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RequestSignMessageUseCase constructor(
+internal class RequestSignMessageUseCase constructor(
     private val app2AppRepository: App2AppRepository = App2AppRepository()
 ) {
 

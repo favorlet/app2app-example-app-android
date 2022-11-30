@@ -1,12 +1,14 @@
 package io.fingerlabs.ex.app2app
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.fingerlabs.ex.app2app.common.eventwrapper.Event
-import io.fingerlabs.ex.app2app.data.repository.App2AppRepository
-import io.fingerlabs.ex.app2app.data.source.model.*
+import io.fingerlabs.lib.app2app.App2AppComponent
+import io.fingerlabs.lib.app2app.common.App2AppAction
+import io.fingerlabs.lib.app2app.data.source.remote.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -14,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-        private val app2AppRepository: App2AppRepository
+    private val app2AppComponent: App2AppComponent
 ): ViewModel() {
 
     val app2AppRequestId = MutableLiveData<Event<String>>()
@@ -22,6 +24,8 @@ class MainViewModel @Inject constructor(
     val signatureHash = MutableLiveData<String>()
     val resultSendCoin = MutableLiveData<Event<String>>()
     val resultExecuteContract = MutableLiveData<Event<String>>()
+
+    val executeUri = MutableLiveData<Event<Uri>>()
 
     val progress = MutableLiveData<Event<Boolean>>()
     val isConnectedWallet = MutableLiveData<Event<Boolean>>()
@@ -31,7 +35,7 @@ class MainViewModel @Inject constructor(
             progress.postValue(Event(true))
             runCatching {
                 val request = App2AppConnectWalletRequest(
-                        action = "connectWallet",
+                        action = App2AppAction.CONNECT_WALLET.value,
                         chainId = chainId,
                         blockChainApp = App2AppBlockChainApp(
                                 name = "App2App Sample",
@@ -39,10 +43,10 @@ class MainViewModel @Inject constructor(
                                 failAppLink = "",
                         )
                 )
-                app2AppRepository.requestConnectWallet(request)
+                app2AppComponent.requestConnectWallet(request)
             }.onSuccess {
-                if (it.error == null && !(it.requestId.isNullOrEmpty())) {
-                    app2AppRequestId.postValue(Event(it.requestId))
+                if (it.err == null && !(it.requestId.isNullOrEmpty())) {
+                    app2AppRequestId.postValue(Event(it.requestId!!))
                     isConnectedWallet.postValue(Event(true))
                 }
                 progress.postValue(Event(false))
@@ -58,7 +62,7 @@ class MainViewModel @Inject constructor(
             progress.postValue(Event(true))
             runCatching {
                 val request = App2AppSignMessageRequest(
-                    action = "signMessage",
+                    action = App2AppAction.SIGN_MESSAGE.value,
                     chainId = chainId,
                     blockChainApp = App2AppBlockChainApp(
                         name = "App2App Sample",
@@ -70,10 +74,10 @@ class MainViewModel @Inject constructor(
                         value = message,
                     )
                 )
-                app2AppRepository.requestSignMessage(request)
+                app2AppComponent.requestSignMessage(request)
             }.onSuccess {
-                if (it.error == null && !(it.requestId.isNullOrEmpty())) {
-                    app2AppRequestId.postValue(Event(it.requestId))
+                if (it.err == null && !(it.requestId.isNullOrEmpty())) {
+                    app2AppRequestId.postValue(Event(it.requestId!!))
                 }
                 progress.postValue(Event(false))
             }.onFailure {
@@ -88,7 +92,7 @@ class MainViewModel @Inject constructor(
             progress.postValue(Event(true))
             runCatching {
                 val request = App2AppSendCoinRequest(
-                    action = "sendCoin",
+                    action = App2AppAction.SEND_COIN.value,
                     chainId = chainId,
                     blockChainApp = App2AppBlockChainApp(
                         name = "App2App Sample",
@@ -103,10 +107,10 @@ class MainViewModel @Inject constructor(
                         )
                     )
                 )
-                app2AppRepository.requestSendCoin(request)
+                app2AppComponent.requestSendCoin(request)
             }.onSuccess {
-                if (it.error == null && !(it.requestId.isNullOrEmpty())) {
-                    app2AppRequestId.postValue(Event(it.requestId))
+                if (it.err == null && !(it.requestId.isNullOrEmpty())) {
+                    app2AppRequestId.postValue(Event(it.requestId!!))
                 }
                 progress.postValue(Event(false))
             }.onFailure {
@@ -128,7 +132,7 @@ class MainViewModel @Inject constructor(
             progress.postValue(Event(true))
             runCatching {
                 val request = App2AppExecuteContractRequest(
-                    action = "executeContract",
+                    action = App2AppAction.EXECUTE_CONTRACT.value,
                     chainId = chainId,
                     blockChainApp = App2AppBlockChainApp(
                         name = "App2App Sample",
@@ -146,10 +150,10 @@ class MainViewModel @Inject constructor(
                         )
                     )
                 )
-                app2AppRepository.requestExecuteContract(request)
+                app2AppComponent.requestExecuteContract(request)
             }.onSuccess {
-                if (it.error == null && !(it.requestId.isNullOrEmpty())) {
-                    app2AppRequestId.postValue(Event(it.requestId))
+                if (it.err == null && !(it.requestId.isNullOrEmpty())) {
+                    app2AppRequestId.postValue(Event(it.requestId!!))
                 }
                 progress.postValue(Event(false))
             }.onFailure {
@@ -159,7 +163,15 @@ class MainViewModel @Inject constructor(
     }
 
 
-    fun requestReceipt() {
+
+    fun execute(requestId: String) {
+        viewModelScope.launch {
+
+        }
+    }
+
+
+    fun receipt() {
         viewModelScope.launch(Dispatchers.IO) {
             if (app2AppRequestId.value?.peekContent().isNullOrEmpty()) return@launch
 
@@ -167,22 +179,22 @@ class MainViewModel @Inject constructor(
             val requestId = app2AppRequestId.value?.getContentIfNotHandled()
             repeat(5) {
                 runCatching {
-                    requestId?.let { app2AppRepository.requestReceipt(it) }
+                    requestId?.let { app2AppComponent.receipt(it) }
                 }.onSuccess {
                     when (it?.action) {
-                        "connectWallet" -> {
+                        App2AppAction.CONNECT_WALLET.value -> {
                             val address = it?.connectWallet?.address ?: "-"
                             connectedAddress.postValue(address)
                         }
-                        "signMessage" -> {
+                        App2AppAction.SIGN_MESSAGE.value -> {
                             val signature = it?.signMessage?.signature ?: "-"
                             signatureHash.postValue(signature)
                         }
-                        "sendCoin" -> {
+                        App2AppAction.SEND_COIN.value -> {
                             val status = it?.transactions?.first()?.status ?: "-"
                             resultSendCoin.postValue(Event(status))
                         }
-                        "executeContract" -> {
+                        App2AppAction.EXECUTE_CONTRACT.value -> {
                             val status = it?.transactions?.first()?.status ?: "-"
                             resultExecuteContract.postValue(Event(status))
                         }

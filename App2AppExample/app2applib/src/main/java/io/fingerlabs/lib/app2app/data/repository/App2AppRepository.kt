@@ -3,7 +3,7 @@ package io.fingerlabs.lib.app2app.data.repository
 import io.fingerlabs.lib.app2app.data.source.remote.api.App2AppApi
 import io.fingerlabs.lib.app2app.data.source.remote.model.*
 
-class App2AppRepository constructor(
+internal class App2AppRepository constructor(
     private val app2appApi: App2AppApi = App2AppApi()
 ) {
 

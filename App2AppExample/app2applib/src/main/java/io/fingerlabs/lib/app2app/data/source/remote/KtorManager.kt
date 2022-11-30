@@ -11,7 +11,7 @@ import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-object KtorManager {
+internal object KtorManager {
     private const val TAG = "app2app_lib"
     private const val TIME_OUT = 10_000L
 

@@ -5,7 +5,7 @@ import io.fingerlabs.lib.app2app.data.source.remote.model.*
 import io.ktor.client.*
 import io.ktor.client.request.*
 
-class App2AppApi constructor(
+internal class App2AppApi constructor(
     private val httpClient: HttpClient = KtorManager.newInstance()
 ) {
 

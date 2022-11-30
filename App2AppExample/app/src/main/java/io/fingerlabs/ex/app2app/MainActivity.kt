@@ -85,14 +85,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun goToFavorletApp2App(requestId: String) {
-        // FAVORLET 앱에 Applink 복귀기능이 없어서 딥링크 방식 사용.
-        val uri = Uri.parse("https://favorlet.page.link/?link=https://favorlet.io?requestId=$requestId&apn=io.fingerlabs.wallet&isi=6443620205&ibi=io.fingerlabs.wl.favorlet&efr=1")
 
-        // TODO: 추후 FAVORLET 앱에 Applink 복귀기능이 추가되면 아래 방식 사용.
-//        val uri = Uri.parse("favorlet://app.link?link=https://favorlet.io?requestId=$requestId")
-
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(intent)
     }
 
 
