@@ -1,12 +1,7 @@
-package io.fingerlabs.ex.app2app.common.di
+package io.fingerlabs.lib.app2app.data.source.remote
 
 import android.util.Log
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import io.fingerlabs.ex.app2app.Constant
-import io.fingerlabs.ex.app2app.data.source.api.App2AppApi
+import io.fingerlabs.lib.app2app.common.Constant
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -15,35 +10,17 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import javax.inject.Qualifier
-import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-object SingletonModule {
-
-    private const val TIME_OUT = 10000L
-
-    @Provides
-    @Singleton
-    fun provideApp2AppApi(@App2AppHttpClient httpClient: HttpClient) = App2AppApi(httpClient)
+object KtorManager {
+    private const val TAG = "app2app_lib"
+    private const val TIME_OUT = 10_000L
 
 
-    @Qualifier
-    @Retention(AnnotationRetention.BINARY)
-    annotation class App2AppHttpClient
-
-
-    @Provides
-    @Singleton
-    @App2AppHttpClient
-    fun provideApp2AppHttpClient() = getHttpClientForAndroid {
+    fun newInstance() = getHttpClientForAndroid {
         url { protocol = URLProtocol.HTTPS }
-        host = Constant.BaseUrl.APP2APP
+        host = Constant.BASEURL_APP2APP
         expectSuccess = false
     }
-
-
 
 
     private fun getHttpClientForAndroid(block: (HttpRequestBuilder.() -> Unit)? = null) =
@@ -69,12 +46,12 @@ object SingletonModule {
                     override fun log(message: String) {
                         if (isJsonFormat(message)) {
                             try {
-                                Log.i("FAVORLET", "$message")
+                                Log.i(TAG, "$message")
                             } catch (e: Exception) {
-                                Log.i("FAVORLET", "#####1 $message")
+                                Log.i(TAG, "#####1 $message")
                             }
                         } else {
-                            Log.i("FAVORLET", "#####2 $message")
+                            Log.i(TAG, "#####2 $message")
                         }
                     }
                 }
@@ -82,11 +59,14 @@ object SingletonModule {
             }
 
             defaultRequest {
+                // 요청 헤더값
                 contentType(ContentType.Application.Json)
                 accept(ContentType.Application.Json)
                 if (block != null) block()
             }
         }
 
+
     private fun isJsonFormat(text: String) = text.startsWith("{") && text.endsWith("}")
+
 }
