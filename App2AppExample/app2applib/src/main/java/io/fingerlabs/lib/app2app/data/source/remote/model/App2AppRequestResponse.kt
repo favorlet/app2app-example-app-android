@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class App2AppRequestResponse(
     @SerialName("requestId")
-    val requestId: String?,
+    val requestId: String? = null,
 
     @SerialName("expiredAt")
-    val expiredAt: String?,
+    val expiredAt: String? = null,
 
     @SerialName("err")
-    val err: Err?,
+    val err: Err? = null,
 
 ) {
 

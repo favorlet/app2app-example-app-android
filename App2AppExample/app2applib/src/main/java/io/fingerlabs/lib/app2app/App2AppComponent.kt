@@ -1,13 +1,15 @@
 package io.fingerlabs.lib.app2app
 
+import android.content.Context
 import io.fingerlabs.lib.app2app.data.source.remote.model.*
 import io.fingerlabs.lib.app2app.domain.usecase.*
 
-class App2AppComponent {
+class App2AppComponent(val context: Context) {
     private val requestConnectWalletUseCase = RequestConnectWalletUseCase()
     private val requestSignMessageUseCase = RequestSignMessageUseCase()
     private val requestSendCoinUseCase = RequestSendCoinUseCase()
     private var requestExecuteContractUseCase = RequestExecuteContractUseCase()
+    private var executeUseCase = ExecuteUseCase()
     private var receiptUseCase = ReceiptUseCase()
 
 
@@ -30,6 +32,10 @@ class App2AppComponent {
         request: App2AppExecuteContractRequest
     ): App2AppRequestResponse = requestExecuteContractUseCase.invoke(request)
 
+
+    fun execute(requestId: String) {
+        executeUseCase.invoke(context, requestId)
+    }
 
     suspend fun receipt(
         requestId: String

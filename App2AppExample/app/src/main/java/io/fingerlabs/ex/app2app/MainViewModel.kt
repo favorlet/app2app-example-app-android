@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.fingerlabs.ex.app2app.common.eventwrapper.Event
 import io.fingerlabs.lib.app2app.App2AppComponent
 import io.fingerlabs.lib.app2app.common.App2AppAction
+import io.fingerlabs.lib.app2app.common.App2AppStatus
 import io.fingerlabs.lib.app2app.data.source.remote.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -24,8 +25,6 @@ class MainViewModel @Inject constructor(
     val signatureHash = MutableLiveData<String>()
     val resultSendCoin = MutableLiveData<Event<String>>()
     val resultExecuteContract = MutableLiveData<Event<String>>()
-
-    val executeUri = MutableLiveData<Event<Uri>>()
 
     val progress = MutableLiveData<Event<Boolean>>()
     val isConnectedWallet = MutableLiveData<Event<Boolean>>()
@@ -166,7 +165,7 @@ class MainViewModel @Inject constructor(
 
     fun execute(requestId: String) {
         viewModelScope.launch {
-
+            app2AppComponent.execute(requestId)
         }
     }
 
@@ -183,20 +182,32 @@ class MainViewModel @Inject constructor(
                 }.onSuccess {
                     when (it?.action) {
                         App2AppAction.CONNECT_WALLET.value -> {
-                            val address = it?.connectWallet?.address ?: "-"
-                            connectedAddress.postValue(address)
+                            // 지갑연결
+                            if (it?.connectWallet?.status == App2AppStatus.SUCCEED.value) {
+                                val address = it?.connectWallet?.address ?: "-"
+                                connectedAddress.postValue(address)
+                            }
                         }
                         App2AppAction.SIGN_MESSAGE.value -> {
-                            val signature = it?.signMessage?.signature ?: "-"
-                            signatureHash.postValue(signature)
+                            // 메시지 서명
+                            if (it?.signMessage?.status == App2AppStatus.SUCCEED.value) {
+                                val signature = it?.signMessage?.signature ?: "-"
+                                signatureHash.postValue(signature)
+                            }
                         }
                         App2AppAction.SEND_COIN.value -> {
-                            val status = it?.transactions?.first()?.status ?: "-"
-                            resultSendCoin.postValue(Event(status))
+                            // 코인 전송
+                            if (it?.transactions?.first()?.status == App2AppStatus.SUCCEED.value) {
+                                val status = it?.transactions?.first()?.status ?: "-"
+                                resultSendCoin.postValue(Event(status))
+                            }
                         }
                         App2AppAction.EXECUTE_CONTRACT.value -> {
-                            val status = it?.transactions?.first()?.status ?: "-"
-                            resultExecuteContract.postValue(Event(status))
+                            // 컨트랙트 실행
+                            if (it?.transactions?.first()?.status == App2AppStatus.SUCCEED.value) {
+                                val status = it?.transactions?.first()?.status ?: "-"
+                                resultExecuteContract.postValue(Event(status))
+                            }
                         }
                         else -> {}
                     }

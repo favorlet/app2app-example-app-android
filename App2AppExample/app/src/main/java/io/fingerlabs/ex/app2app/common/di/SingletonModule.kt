@@ -1,8 +1,10 @@
 package io.fingerlabs.ex.app2app.common.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.fingerlabs.lib.app2app.App2AppComponent
 import javax.inject.Singleton
@@ -11,12 +13,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object SingletonModule {
 
-    private const val TIME_OUT = 10000L
-
-
     @Provides
     @Singleton
-    fun provideApp2AppComponent() = App2AppComponent()
+    fun provideApp2AppComponent(
+        @ApplicationContext context: Context
+    ) = App2AppComponent(context)
 
 
 }
