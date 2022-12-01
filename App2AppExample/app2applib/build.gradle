@@ -2,15 +2,24 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlinx-serialization'
+    id 'maven-publish'
 }
+
+
+def versionMajor = 0
+def versionMinor = 9
+def versionPatch = 0
+def versionDev = 0
 
 android {
     namespace 'io.fingerlabs.lib.app2app'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         minSdk 26
-        targetSdk 32
+        targetSdk 33
+        versionCode versionMajor * 10000000 + versionMinor * 100000 + versionPatch * 1000 + versionDev * 10
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -31,6 +40,21 @@ android {
     }
 }
 
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = "io.fingerlabs"
+                artifactId = "favorlet-app2app-lib"
+                version = android.defaultConfig.versionName
+            }
+        }
+    }
+}
+
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.8.0'
@@ -45,5 +69,6 @@ dependencies {
     implementation 'io.ktor:ktor-client-serialization:1.6.8'
     implementation 'io.ktor:ktor-client-logging-jvm:1.6.8'
 
-
 }
+
+
