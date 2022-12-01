@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
     id 'kotlinx-serialization'
+    id 'maven-publish'
 }
 
 android {
@@ -65,8 +66,8 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:2.44"
 
     // FAVORLET app2app
-    implementation project(path: ":app2applib")
-
+//    implementation project(path: ":app2applib")
+    implementation 'com.github.favorlet:app2app-lib-android:0.9.1'
 
 }
 

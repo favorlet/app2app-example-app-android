@@ -8,7 +8,7 @@ plugins {
 
 def versionMajor = 0
 def versionMinor = 9
-def versionPatch = 1
+def versionPatch = 2
 def versionDev = 0
 
 android {
@@ -41,20 +41,6 @@ android {
 }
 
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = "io.fingerlabs"
-                artifactId = "favorlet-app2app-lib"
-                version = android.defaultConfig.versionName
-            }
-        }
-    }
-}
-
-
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.8.0'
@@ -69,6 +55,34 @@ dependencies {
     implementation 'io.ktor:ktor-client-serialization:1.6.8'
     implementation 'io.ktor:ktor-client-logging-jvm:1.6.8'
 
+}
+
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'io.fingerlabs'
+                artifactId = 'favorlet-app2app-lib'
+                version = android.defaultConfig.versionName
+            }
+            // Creates a Maven publication called “debug”.
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
+
+                groupId = 'io.fingerlabs'
+                artifactId = 'favorlet-app2app-lib'
+                version = android.defaultConfig.versionName
+            }
+        }
+    }
 }
 
 
