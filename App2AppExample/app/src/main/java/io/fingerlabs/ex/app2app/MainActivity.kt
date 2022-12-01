@@ -74,7 +74,6 @@ class MainActivity : AppCompatActivity() {
                 val functionName = editFunctionName.text.toString()
                 mainViewModel.requestExecuteContract(chainId, contractAddress, abi, params, value, functionName)
             }
-
         }
     }
 

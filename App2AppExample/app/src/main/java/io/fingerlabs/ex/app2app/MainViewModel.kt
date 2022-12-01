@@ -1,6 +1,5 @@
 package io.fingerlabs.ex.app2app
 
-import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
