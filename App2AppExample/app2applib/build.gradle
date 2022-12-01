@@ -5,11 +5,13 @@ plugins {
     id 'maven-publish'
 }
 
+def localProperties = new Properties()
+localProperties.load(rootProject.file('local.properties').newDataInputStream())
 
 def versionMajor = 0
-def versionMinor = 9
-def versionPatch = 2
-def versionDev = 0
+def versionMinor = 9    // 가능범위: 0~99.
+def versionPatch = 3    // 가능범위: 0~999.
+def versionDev = 0      // 가능범위: 0~99. 버전이 변경되면 0으로 초기화.
 
 android {
     namespace 'io.fingerlabs.lib.app2app'
@@ -18,7 +20,7 @@ android {
     defaultConfig {
         minSdk 26
         targetSdk 33
-        versionCode versionMajor * 10000000 + versionMinor * 100000 + versionPatch * 1000 + versionDev * 10
+        versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionDev
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -61,22 +63,19 @@ dependencies {
 
 afterEvaluate {
     publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                // Applies the component for the release build variant.
-                from components.release
-
-                // You can then customize attributes of the publication as shown below.
-                groupId = 'io.fingerlabs'
-                artifactId = 'favorlet-app2app-lib'
-                version = android.defaultConfig.versionName
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/favorlet/app2app-lib-android")
+                credentials {
+                    username = localProperties['USER_NAME']
+                    password = localProperties['USER_ACCESS_TOKEN']
+                }
             }
-            // Creates a Maven publication called “debug”.
-            debug(MavenPublication) {
-                // Applies the component for the debug build variant.
-                from components.debug
-
+        }
+        publications {
+            release(MavenPublication) {
+                from components.release
                 groupId = 'io.fingerlabs'
                 artifactId = 'favorlet-app2app-lib'
                 version = android.defaultConfig.versionName

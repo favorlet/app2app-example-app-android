@@ -67,7 +67,7 @@ dependencies {
 
     // FAVORLET app2app
 //    implementation project(path: ":app2applib")
-    implementation 'com.github.favorlet:app2app-lib-android:0.9.1'
+    implementation "com.github.favorlet:app2app-lib-android:0.9.2"
 
 }
 

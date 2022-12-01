@@ -2,7 +2,6 @@
 buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-serialization:1.7.20"
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
 
