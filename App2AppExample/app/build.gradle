@@ -59,7 +59,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common:2.5.1"
 
     // FAVORLET app2app
-    implementation project(path: ":app2applib")
+    implementation "com.github.favorlet:app2app-lib-android:0.9.5"
 
 }
 

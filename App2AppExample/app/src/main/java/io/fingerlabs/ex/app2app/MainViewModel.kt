@@ -10,9 +10,7 @@ import io.fingerlabs.lib.app2app.App2AppComponent
 import io.fingerlabs.lib.app2app.common.App2AppAction
 import io.fingerlabs.lib.app2app.common.App2AppStatus
 import io.fingerlabs.lib.app2app.data.source.remote.model.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
 class MainViewModel constructor(
@@ -165,6 +163,11 @@ class MainViewModel constructor(
         viewModelScope.launch {
             app2AppComponent.execute(activityContext, requestId)
         }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            app2AppComponent.receipt("")
+        }
+
     }
 
 
