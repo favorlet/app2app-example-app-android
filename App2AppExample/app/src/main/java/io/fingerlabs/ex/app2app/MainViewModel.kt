@@ -1,9 +1,10 @@
 package io.fingerlabs.ex.app2app
 
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.fingerlabs.ex.app2app.common.eventwrapper.Event
 import io.fingerlabs.lib.app2app.App2AppComponent
 import io.fingerlabs.lib.app2app.common.App2AppAction
@@ -12,11 +13,10 @@ import io.fingerlabs.lib.app2app.data.source.remote.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
-    private val app2AppComponent: App2AppComponent
+
+class MainViewModel constructor(
+    private val app2AppComponent: App2AppComponent = App2AppComponent()
 ): ViewModel() {
     val app2AppRequestId = MutableLiveData<Event<String>>()
     val connectedAddress = MutableLiveData<String>()
@@ -161,9 +161,9 @@ class MainViewModel @Inject constructor(
 
 
 
-    fun execute(requestId: String) {
+    fun execute(activityContext: Context, requestId: String) {
         viewModelScope.launch {
-            app2AppComponent.execute(requestId)
+            app2AppComponent.execute(activityContext, requestId)
         }
     }
 

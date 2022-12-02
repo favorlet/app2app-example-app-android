@@ -2,9 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
-    id 'kotlinx-serialization'
-    id 'maven-publish'
 }
 
 android {
@@ -61,13 +58,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-process:2.5.1"
     implementation "androidx.lifecycle:lifecycle-common:2.5.1"
 
-    // Hilt (https://developer.android.com/training/dependency-injection/hilt-android#groovy)
-    implementation "com.google.dagger:hilt-android:2.44"
-    kapt "com.google.dagger:hilt-compiler:2.44"
-
     // FAVORLET app2app
     implementation project(path: ":app2applib")
-//    implementation "io.fingerlabs:favorlet-app2app-lib:0.9.3"
 
 }
 

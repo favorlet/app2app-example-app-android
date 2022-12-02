@@ -1,25 +1,19 @@
 package io.fingerlabs.ex.app2app
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import dagger.hilt.android.AndroidEntryPoint
 import io.fingerlabs.ex.app2app.common.eventwrapper.EventObserver
 import io.fingerlabs.ex.app2app.databinding.ActivityMainBinding
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val mainViewModel: MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel = MainViewModel()
     private val binding: ActivityMainBinding by lazy {
         DataBindingUtil.setContentView(this, R.layout.activity_main)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
     fun goToFavorletApp2App(requestId: String) {
         Log.i(">>>", ">>> requestID: $requestId")
-        mainViewModel.execute(requestId)
+        mainViewModel.execute(this, requestId)
     }
 
 
