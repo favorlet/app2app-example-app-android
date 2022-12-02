@@ -18,7 +18,6 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val app2AppComponent: App2AppComponent
 ): ViewModel() {
-
     val app2AppRequestId = MutableLiveData<Event<String>>()
     val connectedAddress = MutableLiveData<String>()
     val signatureHash = MutableLiveData<String>()
