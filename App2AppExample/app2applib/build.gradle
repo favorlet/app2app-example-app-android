@@ -5,9 +5,9 @@ plugins {
     id 'maven-publish'
 }
 
-def versionMajor = 0
-def versionMinor = 9    // 가능범위: 0~99.
-def versionPatch = 5    // 가능범위: 0~99.
+def versionMajor = 1
+def versionMinor = 0    // 가능범위: 0~99.
+def versionPatch = 0    // 가능범위: 0~99.
 def versionDev = 0      // 가능범위: 0~99. 버전이 변경되면 0으로 초기화.
 
 android {
