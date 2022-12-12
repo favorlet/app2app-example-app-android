@@ -340,5 +340,3 @@ app2AppComponent.receipt(requestId)
 - 설계는 복수 트랜잭션 처리가 고려되어 있으나, 현재는 1개의 트랜잭션만 처리.
 - 만약 복수 개의 트랜잭션을 요청 시, FAVORLET에서는 첫번째 트랜잭션만 처리.
 
-# 예정사항
-네이티브 앱을 위한 app2app SDK 공개 예정.
