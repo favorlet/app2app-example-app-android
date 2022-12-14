@@ -59,7 +59,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common:2.5.1"
 
     // FAVORLET app2app
-    implementation "com.github.favorlet:app2app-sdk-android:1.0.0"
+    implementation project(":app2applib")
+//    implementation "com.github.favorlet:app2app-sdk-android:1.0.0"
 
 }
 
