@@ -17,8 +17,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="-29dp"
-            tools:layout_editor_absoluteY="0dp">
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="51dp">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -41,34 +41,28 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="지갑연결 (connectWallet)"
+                        android:textColor="@color/black"
                         android:textSize="17dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="체인 ID" />
+                        android:text="체인 ID (Optional)" />
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editChainId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/editChainId"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:hint="Chain ID"
-                            android:text="8217" />
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="클레이튼(8217)만 지원"
-                            android:textColor="#ff0000" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                        android:layout_marginBottom="10dp"
+                        android:text="Klaytn Mainnet: 8217\nKlaytn Testnet (Baobab): 1001\nEthereum Mainnet: 1\nEthereum Testnet (Goerli): 5\nPolygon Mainnet: 137\nPolygon Testnet (Mumbai): 80001\nBSC Mainnet: 56\nBSC Testnet: 97"
+                        android:textColor="#000000" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnConnectWallet"
@@ -81,7 +75,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="결과"/>
+                        android:text="결과" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textConnectedAddress"
                         android:layout_width="match_parent"
@@ -106,9 +101,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="메시지 서명 (signMessage)"
+                        android:textColor="@color/black"
                         android:textSize="17dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -119,8 +114,7 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editMessage"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="favorlet"/>
+                        android:layout_height="wrap_content"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSignMessage"
@@ -128,16 +122,18 @@
                         android:layout_height="wrap_content"
                         android:text="서명하기"
                         android:textAllCaps="false" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="결과"/>
+                        android:text="결과" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textSignature"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_marginTop="5dp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <!--코인전송 (SendCoin)-->
@@ -154,9 +150,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="코인전송 (sendCoin)"
+                        android:textColor="@color/black"
                         android:textSize="17dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -168,22 +164,21 @@
                         android:id="@+id/editTo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0x1707Cc19778A773c45C1EA03f62482481d3c0fBD" />
+                        android:text="" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="보낼 수량 (단위: peb)" />
+                        android:text="보낼 수량 (단위: wei / peb)" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editCoinAmount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Amount"
                         android:inputType="numberDecimal"
                         android:maxLines="1"
-                        android:text="100000000000000000" />
+                        android:text="" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSendCoin"
@@ -191,16 +186,18 @@
                         android:layout_height="wrap_content"
                         android:text="전송하기"
                         android:textAllCaps="false" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="결과"/>
+                        android:text="결과" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textSendCoinResult"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_marginTop="5dp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <!--컨트랙트 실행 (ExecuteContract)-->
@@ -217,9 +214,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="컨트랙트 실행 (executeContract)"
+                        android:textColor="@color/black"
                         android:textSize="17dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -230,8 +227,7 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editContractAddress"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="0xe34acbf6fd2bc844be302e4acc97f401f6cd6985" />
+                        android:layout_height="wrap_content"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -255,7 +251,6 @@
                         android:id="@+id/editParams"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Params"
                         android:text="[]" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -267,23 +262,33 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editFunctionName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Function Name"
-                        android:text="safeTransferFrom" />
+                        android:layout_height="wrap_content"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="수량 (단위: Peb)" />
+                        android:text="수량 (단위: Peb)  *payable = false 인 함수는 0으로 지정" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editAmount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Value"
                         android:maxLines="1"
                         android:text="0" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="가스 Limit (Optional)" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editGasLimit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnExecuteContract"
@@ -296,12 +301,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="결과"/>
+                        android:text="결과" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/textExecuteContractResult"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_marginTop="5dp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>

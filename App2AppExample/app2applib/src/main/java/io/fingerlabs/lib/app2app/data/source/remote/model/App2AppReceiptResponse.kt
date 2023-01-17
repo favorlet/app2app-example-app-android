@@ -15,6 +15,9 @@ data class App2AppReceiptResponse(
     @SerialName("action")
     val action: String? = null,
 
+    @SerialName("chainId")
+    val chainId: Int? = null,
+
     @SerialName("connectWallet")
     val connectWallet: ConnectWallet? = null,
 

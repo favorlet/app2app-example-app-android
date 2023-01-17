@@ -24,8 +24,11 @@ class MainViewModel constructor(
 
     val progress = MutableLiveData<Event<Boolean>>()
     val isConnectedWallet = MutableLiveData<Event<Boolean>>()
+    val receivedChainId = MutableLiveData<Int>()
 
-    fun requestConnectWallet(chainId: Int) {
+    val errorToast = MutableLiveData<Event<String>>()
+
+    fun requestConnectWallet(chainId: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
             progress.postValue(Event(true))
             runCatching {
@@ -43,6 +46,8 @@ class MainViewModel constructor(
                 if (it.err == null && !(it.requestId.isNullOrEmpty())) {
                     app2AppRequestId.postValue(Event(it.requestId!!))
                     isConnectedWallet.postValue(Event(true))
+                } else if (it.err != null) {
+                    errorToast.postValue(Event("[${it.err?.code}] ${it.err?.errorMessage}"))
                 }
                 progress.postValue(Event(false))
             }.onFailure {
@@ -73,6 +78,8 @@ class MainViewModel constructor(
             }.onSuccess {
                 if (it.err == null && !(it.requestId.isNullOrEmpty())) {
                     app2AppRequestId.postValue(Event(it.requestId!!))
+                } else if (it.err != null) {
+                    errorToast.postValue(Event("[${it.err?.code}] ${it.err?.errorMessage}"))
                 }
                 progress.postValue(Event(false))
             }.onFailure {
@@ -106,6 +113,8 @@ class MainViewModel constructor(
             }.onSuccess {
                 if (it.err == null && !(it.requestId.isNullOrEmpty())) {
                     app2AppRequestId.postValue(Event(it.requestId!!))
+                } else if (it.err != null) {
+                    errorToast.postValue(Event("[${it.err?.code}] ${it.err?.errorMessage}"))
                 }
                 progress.postValue(Event(false))
             }.onFailure {
@@ -121,7 +130,8 @@ class MainViewModel constructor(
         abi: String,
         params: String,
         value: String,
-        functionName: String
+        functionName: String,
+        gasLimit: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             progress.postValue(Event(true))
@@ -141,7 +151,8 @@ class MainViewModel constructor(
                             abi = abi,
                             value = value,
                             params = params,
-                            functionName = functionName
+                            functionName = functionName,
+                            gasLimit = gasLimit.ifEmpty { null }
                         )
                     )
                 )
@@ -149,6 +160,8 @@ class MainViewModel constructor(
             }.onSuccess {
                 if (it.err == null && !(it.requestId.isNullOrEmpty())) {
                     app2AppRequestId.postValue(Event(it.requestId!!))
+                } else if (it.err != null) {
+                    errorToast.postValue(Event("[${it.err?.code}] ${it.err?.errorMessage}"))
                 }
                 progress.postValue(Event(false))
             }.onFailure {
@@ -187,6 +200,8 @@ class MainViewModel constructor(
                             if (it?.connectWallet?.status == App2AppStatus.SUCCEED.value) {
                                 val address = it?.connectWallet?.address ?: "-"
                                 connectedAddress.postValue(address)
+                                val chainId = it?.chainId ?: -1
+                                receivedChainId.postValue(chainId)
                             }
                         }
                         App2AppAction.SIGN_MESSAGE.value -> {

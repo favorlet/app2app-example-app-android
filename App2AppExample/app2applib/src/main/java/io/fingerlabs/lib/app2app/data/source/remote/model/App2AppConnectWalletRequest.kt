@@ -9,7 +9,7 @@ data class App2AppConnectWalletRequest(
     val action: String,
 
     @SerialName("chainId")
-    val chainId: Int,
+    val chainId: Int?,
 
     @SerialName("blockChainApp")
     val blockChainApp: App2AppBlockChainApp,

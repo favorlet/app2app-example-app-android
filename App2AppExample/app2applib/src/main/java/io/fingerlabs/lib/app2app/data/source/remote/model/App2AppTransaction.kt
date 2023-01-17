@@ -22,4 +22,7 @@ data class App2AppTransaction(
 
     @SerialName("functionName")
     val functionName: String? = null,
+
+    @SerialName("gasLimit")
+    val gasLimit: String? = null
 )
