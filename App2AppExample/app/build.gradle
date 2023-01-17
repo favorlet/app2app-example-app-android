@@ -60,7 +60,7 @@ dependencies {
 
     // FAVORLET app2app
     debugImplementation project(":app2applib")
-    releaseImplementation "com.github.favorlet:app2app-sdk-android:1.0.0"
+    releaseImplementation "com.github.favorlet:app2app-sdk-android:1.0.1"
 
 }
 
