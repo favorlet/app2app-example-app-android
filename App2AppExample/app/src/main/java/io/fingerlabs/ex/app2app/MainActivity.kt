@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                         "  }]"
             )
             editABI.setText(latestAbi)
-            val latestParams = sharedUtil.loadStringValue(Constant.NAME_EXECUTE_CONTRACT_PARAMS, "[\"0x...\",100000000000000000]")
+            val latestParams = sharedUtil.loadStringValue(Constant.NAME_EXECUTE_CONTRACT_PARAMS, "[\"0x...\",\"100000000000000000\"]")
             editParams.setText(latestParams)
             val latestFunctionName = sharedUtil.loadStringValue(Constant.NAME_EXECUTE_CONTRACT_FUNCTION, "transfer")
             editFunctionName.setText(latestFunctionName)

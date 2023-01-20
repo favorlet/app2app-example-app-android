@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 ```groovy
 dependencies {
     ...
-    implementation "com.github.favorlet:app2app-sdk-android:1.0.0"
+    implementation "com.github.favorlet:app2app-sdk-android:1.0.3"
     
 }
 ```
@@ -337,7 +337,7 @@ app2AppComponent.receipt(requestId)
 
 
 # 제약사항
-23.01.17.화 기준
+23.01.20 기준
 
 #### app2app 트랜잭션
 - 설계는 복수 트랜잭션 처리가 고려되어 있으나, 현재는 1개의 트랜잭션만 처리.
@@ -346,7 +346,7 @@ app2AppComponent.receipt(requestId)
 
 # 변경사항
 
-### 1.0.1 (22.01.17)
+### 1.0.4 (22.01.20)
 
 #### 멀티 체인 지원
 - 기존의 클레이튼 메인넷 (8217) 외에 아래에 정의된 체인을 지원합니다.
@@ -360,7 +360,9 @@ app2AppComponent.receipt(requestId)
 - 바이낸스 스마트체인 테스트넷 (97)
 
 #### ChainId 옵셔널 처리
-- ConnectWallet 시에 ChainId 값이 필수가 아니고 옵셔널하게 변경.
+- ConnectWallet 시에 ChainId 값이 필수가 아니고 옵셔널하게 변경되었습니다.
+- 따라서 ChainId를 지정하지 않고 ConnectWallet을 할 경우, Receipt에는 FAVORLET에 선택되어있는 ChainId가 전달됩니다. 
 
 #### ExecuteContract 에 gasLimit 옵션 추가
-- gasLimit 을 지정해서 요청할 경우, FAVORLET 앱에서 해당 값으로 설정합니다.
+- gasLimit 을 지정해서 요청할 경우, FAVORLET에서 해당 값으로 설정합니다.
+- gasLimit 을 지정하지 않고 요청할 경우, FAVORLET에서 설정합니다.
