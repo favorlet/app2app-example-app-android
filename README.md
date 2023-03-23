@@ -35,7 +35,7 @@ FAVORLET의 app2app은 <b>요청-실행-결과</b>의 3단계로 동작합니다
 
 # 샘플앱 둘러보기
 
-샘플앱을 실행하시려면, <b>app2app-sdk-android</b> 저장소를 Clone 하신 후에, Android Studio에서 /App2AppExample 프로젝트를 열어주세요.
+샘플앱을 실행하시려면, <b>favorlet-app2app-sdk-android</b> 저장소를 Clone 하신 후에, Android Studio에서 /App2AppExample 프로젝트를 열어주세요.
 UI는 <b>activity_main.xml</b>에 구성되어 있고, app2app 연동 관련 기능은 <b>ContentViewModel</b>에 구현되어 있습니다.
 
 # 시작하기
@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 ```groovy
 dependencies {
     ...
-    implementation "com.github.favorlet:app2app-sdk-android:1.0.3"
+    implementation "com.github.fingerlabs.favorlet-app2app-sdk-android:favorlet-app2app-lib:1.0.4"
     
 }
 ```
