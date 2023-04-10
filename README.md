@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 ```groovy
 dependencies {
     ...
-    implementation "com.github.favorlet:app2app-sdk-android:1.0.3"
+    implementation "com.github.fingerlabs.favorlet-app2app-sdk-android:favorlet-app2app-lib:1.0.5"
     
 }
 ```
@@ -90,10 +90,17 @@ SDK를 사용하는 네이티브 앱에서는 매니페스트에 인터넷 권�
 
 #### 지원하는 체인 ID
 
-- 클레이튼: 메인넷 (8217), 테스트넷 Baobab (1001)    
-- 이더리움: 메인넷 (1), 테스트넷 Goerli (5)    
-- 폴리곤: 메인넷 (137), 테스트넷 Mumbai (80001)
-- 바이낸스스마트체인: 메인넷 (56), 테스트넷 (97)
+|네트워크명|Chain ID|
+|------|---:|
+|클레이튼 메인넷|8217|
+|클레이튼 테스트넷 (Baobab)|1001|
+|이더리움 메인넷|1|
+|이더리움 테스트넷 (Goerli)|5|
+|폴리곤 메인넷|137|
+|폴리곤 테스트넷 (Mumbai)|80001|
+|바이낸스 스마트체인 메인넷|56|
+|바이낸스 스마트체인 테스트넷|97|
+
 
 #### App2AppAction
 - CONNECT_WALLET : 지갑연결.
@@ -196,8 +203,35 @@ val requestId = response.requestId
 ```
 
 #### 컨트랙트함수 실행
+
 ```kotlin
 val request = App2AppExecuteContractRequest(
+    action = App2AppAction.EXECUTE_CONTRACT.value,
+    chainId = 8217,
+    blockChainApp = App2AppBlockChainApp(
+        name = "App2App Sample",
+        successAppLink = "",
+        failAppLink = "",
+    ),
+    transactions = listOf(                  // 실행할 트랜잭션 리스트. (단, 현재는 1개의 트랜잭션만 처리.)
+        App2AppTransaction(
+            from = "0x123...456",           // 트랜잭션을 전송할 지갑 주소.
+            to = "0x654...321",             // 컨트랙트 주소.
+            data = "0xa9059cbb...0000",     // 실행할 함수의 Input.
+            value = "0",                    // 보낼 코인 수량. (단위: peb) 단, non-payable 함수인 경우에는 0으로 지정해야 함.
+            functionName = "transferFrom",   // 실행할 함수명.
+            gasLimit = "100000"             // 가스 리밋. (Optional - 이 값을 지정해서 보낼 경우, FAVORLET 에서는 이 값으로 설정)
+        )
+    )
+)
+val response = app2AppComponent.requestExecuteContract(request)
+val requestId = response.requestId
+```
+
+
+❗️ abi 와 params를 사용하는 아래의 방법은 Deprecated 되었습니다.
+
+~val request = App2AppExecuteContractRequest(
     action = App2AppAction.EXECUTE_CONTRACT.value,
     chainId = 8217,
     blockChainApp = App2AppBlockChainApp(
@@ -218,8 +252,9 @@ val request = App2AppExecuteContractRequest(
     )
 )
 val response = app2AppComponent.requestExecuteContract(request)
-val requestId = response.requestId
-```
+val requestId = response.requestId~
+
+
 
 ### 실행함수 호출
 
