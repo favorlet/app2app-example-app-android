@@ -1,7 +1,6 @@
 package io.fingerlabs.ex.app2app
 
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +14,7 @@ import kotlinx.coroutines.*
 
 class MainViewModel constructor(
     private val app2AppComponent: App2AppComponent = App2AppComponent()
-): ViewModel() {
+) : ViewModel() {
     val app2AppRequestId = MutableLiveData<Event<String>>()
     val connectedAddress = MutableLiveData<String>()
     val signatureHash = MutableLiveData<String>()
@@ -33,13 +32,13 @@ class MainViewModel constructor(
             progress.postValue(Event(true))
             runCatching {
                 val request = App2AppConnectWalletRequest(
-                        action = App2AppAction.CONNECT_WALLET.value,
-                        chainId = chainId,
-                        blockChainApp = App2AppBlockChainApp(
-                                name = "App2App Sample",
-                                successAppLink = "",
-                                failAppLink = "",
-                        )
+                    action = App2AppAction.CONNECT_WALLET.value,
+                    chainId = chainId,
+                    blockChainApp = App2AppBlockChainApp(
+                        name = "App2App Sample",
+                        successAppLink = "",
+                        failAppLink = "",
+                    )
                 )
                 app2AppComponent.requestConnectWallet(request)
             }.onSuccess {
@@ -127,8 +126,7 @@ class MainViewModel constructor(
     fun requestExecuteContract(
         chainId: Int,
         contractAddress: String,
-        abi: String,
-        params: String,
+        data: String,
         value: String,
         functionName: String,
         gasLimit: String
@@ -148,9 +146,8 @@ class MainViewModel constructor(
                         App2AppTransaction(
                             from = connectedAddress.value ?: "",
                             to = contractAddress,
-                            abi = abi,
+                            data = data,
                             value = value,
-                            params = params,
                             functionName = functionName,
                             gasLimit = gasLimit.ifEmpty { null }
                         )
@@ -171,73 +168,61 @@ class MainViewModel constructor(
     }
 
 
-
     fun execute(activityContext: Context, requestId: String) {
         viewModelScope.launch {
             app2AppComponent.execute(activityContext, requestId)
         }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            app2AppComponent.receipt("")
-        }
-
     }
 
 
     fun receipt() {
         viewModelScope.launch(Dispatchers.IO) {
             if (app2AppRequestId.value?.peekContent().isNullOrEmpty()) return@launch
-
             progress.postValue(Event(true))
             val requestId = app2AppRequestId.value?.getContentIfNotHandled()
-            repeat(5) {
-                runCatching {
-                    requestId?.let { app2AppComponent.receipt(it) }
-                }.onSuccess {
-                    when (it?.action) {
-                        App2AppAction.CONNECT_WALLET.value -> {
-                            // 지갑연결
-                            if (it?.connectWallet?.status == App2AppStatus.SUCCEED.value) {
-                                val address = it?.connectWallet?.address ?: "-"
-                                connectedAddress.postValue(address)
-                                val chainId = it?.chainId ?: -1
-                                receivedChainId.postValue(chainId)
-                            }
+            runCatching {
+                requestId?.let { app2AppComponent.receipt(it) }
+            }.onSuccess {
+                when (it?.action) {
+                    App2AppAction.CONNECT_WALLET.value -> {
+                        // 지갑연결
+                        if (it.connectWallet?.status == App2AppStatus.SUCCEED.value) {
+                            val address = it.connectWallet?.address ?: "-"
+                            connectedAddress.postValue(address)
+                            val chainId = it.chainId ?: -1
+                            receivedChainId.postValue(chainId)
                         }
-                        App2AppAction.SIGN_MESSAGE.value -> {
-                            // 메시지 서명
-                            if (it?.signMessage?.status == App2AppStatus.SUCCEED.value) {
-                                val signature = it?.signMessage?.signature ?: "-"
-                                signatureHash.postValue(signature)
-                            }
-                        }
-                        App2AppAction.SEND_COIN.value -> {
-                            // 코인 전송
-                            if (it?.transactions?.first()?.status == App2AppStatus.SUCCEED.value) {
-                                val status = it?.transactions?.first()?.status ?: "-"
-                                resultSendCoin.postValue(Event(status))
-                            }
-                        }
-                        App2AppAction.EXECUTE_CONTRACT.value -> {
-                            // 컨트랙트 실행
-                            if (it?.transactions?.first()?.status == App2AppStatus.SUCCEED.value) {
-                                val status = it?.transactions?.first()?.status ?: "-"
-                                resultExecuteContract.postValue(Event(status))
-                            }
-                        }
-                        else -> {}
                     }
-                    if (it != null) {
-                        progress.postValue(Event(false))
-                        return@repeat
+                    App2AppAction.SIGN_MESSAGE.value -> {
+                        // 메시지 서명
+                        if (it.signMessage?.status == App2AppStatus.SUCCEED.value) {
+                            val signature = it.signMessage?.signature ?: "-"
+                            signatureHash.postValue(signature)
+                        }
                     }
-                }.onFailure {
+                    App2AppAction.SEND_COIN.value -> {
+                        // 코인 전송
+                        if (it.transactions?.first()?.status == App2AppStatus.SUCCEED.value) {
+                            val status = it.transactions?.first()?.status ?: "-"
+                            resultSendCoin.postValue(Event(status))
+                        }
+                    }
+                    App2AppAction.EXECUTE_CONTRACT.value -> {
+                        // 컨트랙트 실행
+                        if (it.transactions?.first()?.status == App2AppStatus.SUCCEED.value) {
+                            val status = it.transactions?.first()?.status ?: "-"
+                            resultExecuteContract.postValue(Event(status))
+                        }
+                    }
+                    else -> {}
+                }
+                if (it != null) {
                     progress.postValue(Event(false))
                 }
-                delay(2000)
+            }.onFailure {
+                progress.postValue(Event(false))
             }
             progress.postValue(Event(false))
         }
     }
-
 }

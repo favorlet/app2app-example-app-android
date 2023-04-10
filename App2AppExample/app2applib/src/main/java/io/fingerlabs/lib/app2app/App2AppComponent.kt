@@ -4,7 +4,7 @@ import android.content.Context
 import io.fingerlabs.lib.app2app.data.source.remote.model.*
 import io.fingerlabs.lib.app2app.domain.usecase.*
 
-class App2AppComponent() {
+class App2AppComponent {
     private val requestConnectWalletUseCase = RequestConnectWalletUseCase()
     private val requestSignMessageUseCase = RequestSignMessageUseCase()
     private val requestSendCoinUseCase = RequestSendCoinUseCase()

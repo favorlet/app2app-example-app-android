@@ -5,6 +5,7 @@
 
 
     <data>
+
         <variable
             name="viewModel"
             type="io.fingerlabs.ex.app2app.MainViewModel" />
@@ -55,7 +56,7 @@
                         android:id="@+id/editChainId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"/>
+                        android:inputType="number" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -114,7 +115,7 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editMessage"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSignMessage"
@@ -227,31 +228,19 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editContractAddress"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="ABI" />
+                        android:text="Data" />
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/editABI"
+                        android:id="@+id/editData"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxHeight="300dp" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="파라미터" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/editParams"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="[]" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -262,7 +251,7 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editFunctionName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
