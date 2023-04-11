@@ -229,31 +229,30 @@ val requestId = response.requestId
 ```
 
 
-❗️ abi 와 params를 사용하는 아래의 방법은 Deprecated 되었습니다.
-
-~val request = App2AppExecuteContractRequest(
-    action = App2AppAction.EXECUTE_CONTRACT.value,
-    chainId = 8217,
-    blockChainApp = App2AppBlockChainApp(
-        name = "App2App Sample",
-        successAppLink = "",
-        failAppLink = "",
-    ),
-    transactions = listOf(                  // 실행할 트랜잭션 리스트. (단, 현재는 1개의 트랜잭션만 처리.)
-        App2AppTransaction(
-            from = "0x123...456",           // 트랜잭션을 전송할 지갑 주소.
-            to = "0x654...321",             // 컨트랙트 주소.
-            abi = "{\"inputs\":[{\"internalType\":\"address\",\"name\":\"src\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"dst\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"wad\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\",\"signature\":\"0x23b872dd\"}", // 실행할 함수의 ABI.
-            value = "0",                    // 보낼 코인 수량. (단위: peb) 단, non-payable 함수인 경우에는 0으로 지정해야 함.
-            params = "[\"0x123...456\", \"0x654...321\", 122]",     // 실행할 함수에 필요한 매개변수. JSONArray 문자열로 구성해야 함.
-            functionName = "transferFrom",   // 실행할 함수명.
-            gasLimit = "100000"             // 가스 리밋값. (Optional - 이 값을 지정해서 보낼 경우, FAVORLET 에서는 이 값으로 설정)
-        )
-    )
-)
-val response = app2AppComponent.requestExecuteContract(request)
+> #### ❗️ abi 및 params를 사용하는 아래의 방법은 Deprecated 되었습니다. 위에서 기재된 방법으로 사용하여야 합니다.
+> ~val request = App2AppExecuteContractRequest(<br>
+    action = App2AppAction.EXECUTE_CONTRACT.value,<br>
+    chainId = 8217,<br>
+    blockChainApp = App2AppBlockChainApp(<br>
+        name = "App2App Sample",<br>
+        successAppLink = "",<br>
+        failAppLink = "",<br>
+    ),<br>
+    transactions = listOf(                  // 실행할 트랜잭션 리스트. (단, 현재는 1개의 트랜잭션만 처리.)<br>
+        App2AppTransaction(<br>
+            from = "0x123...456",           // 트랜잭션을 전송할 지갑 주소.<br>
+            to = "0x654...321",             // 컨트랙트 주소.<br>
+            abi = "{\"inputs\":[{\"internalType\":\"address\",\"name\":\"src\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"dst\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"wad\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\",\"signature\":\"0x23b872dd\"}", // 실행할 함수의 ABI.<br>
+            value = "0",                    // 보낼 코인 수량. (단위: peb) 단, non-payable 함수인 경우에는 0으로 지정해야 함.<br>
+            params = "[\"0x123...456\", \"0x654...321\", 122]",     // 실행할 함수에 필요한 매개변수. JSONArray 문자열로 구성해야 함.<br>
+            functionName = "transferFrom",   // 실행할 함수명.<br>
+            gasLimit = "100000"             // 가스 리밋값. (Optional - 이 값을 지정해서 보낼 경우, FAVORLET 에서는 이 값으로 설정)<br>
+        )<br>
+    )<br>
+)<br>
+val response = app2AppComponent.requestExecuteContract(request)<br>
 val requestId = response.requestId~
-
+<br>
 
 
 ### 실행함수 호출
