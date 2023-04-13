@@ -206,9 +206,8 @@ val requestId = response.requestId
 #### 컨트랙트함수 실행 (1.0.5 이상)
 
 ##### 기존 functionName, ABI, parameters 데이터를 전달하는 방식에서, 인코딩된 함수 데이터를 전달하는 방식으로 변경.
-##### 인코딩된 함수데이터
-###### 예시) 0x095ea7b30000000000000000000000001f6d738ec0cf07a451af55b73bc610edb20c546c0000000000000000000000000000000000000000000000000000000000000000
-###### 참고) [Web3j.Transacting with a smart contract](https://docs.web3j.io/4.9.7/transactions/transactions_and_smart_contracts/#transacting-with-a-smart-contract)
+##### - 인코딩된 함수데이터 예시) 0x095ea7b30000000000000000000000001f6d738ec0cf07a451af55b73bc610edb20c546c0000000000000000000000000000000000000000000000000000000000000000
+##### - 참고링크) [Web3j.Transacting with a smart contract](https://docs.web3j.io/4.9.7/transactions/transactions_and_smart_contracts/#transacting-with-a-smart-contract)
 
 ```kotlin
 val request = App2AppExecuteContractRequest(
