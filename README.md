@@ -8,13 +8,14 @@ FAVORLET은 NFT의 활용성을 극대화시키는 NFT 전용 지갑입니다. N
 - 지갑연결 (connectWallet)
 - 메시지 서명 (signMessage)
 - 코인 전송 (sendCoin)
-- 컨트랙트함수 실행 (executeContract)
+- ~컨트랙트함수 실행 (executeContract)~ (1.0.4 이하)
+- 컨트랙트함수 실행 (executeContractWithEncoded) (1.0.5 이상)
 
 FAVORLET의 app2app은 4가지의 기능을 제공합니다. 
 <b>지갑연결</b>은 사용자의 지갑 주소를 네이티브 앱에 가져오기 위한 기능으로, 지갑 주소가 있으면 블록체인 상의 존재하는 지갑 관련 데이터를 조회할 수 있습니다.
 <b>메시지 서명</b>은 네이티브 앱에서 지정한 메시지를 서명하여, 지갑의 소유권 확인이나, 인증/승인의 역할을 할 수 있는 기능입니다.
 <b>코인 전송</b>은 체인의 플랫폼 코인을 전송하는 기능입니다. 받을 지갑 주소와 수량을 지정하여 전송하실 수 있습니다. 
-<b>컨트랙트함수 실행</b>은 지정된 컨트랙트의 함수를 실행하는 기능으로, 함수명과 매개변수에 따라 다양한 기능을 수행할 수 있습니다.
+<b>컨트랙트함수 실행</b>은 지정된 컨트랙트 함수를 실행하는 기능으로, 함수에 따라 다양한 기능을 수행할 수 있습니다.
 
 ## 동작흐름
 
@@ -35,7 +36,7 @@ FAVORLET의 app2app은 <b>요청-실행-결과</b>의 3단계로 동작합니다
 
 # 샘플앱 둘러보기
 
-샘플앱을 실행하시려면, <b>app2app-sdk-android</b> 저장소를 Clone 하신 후에, Android Studio에서 /App2AppExample 프로젝트를 열어주세요.
+샘플앱을 실행하시려면, <b>favorlet-app2app-sdk-android</b> 저장소를 Clone 하신 후에, Android Studio에서 /App2AppExample 프로젝트를 열어주세요.
 UI는 <b>activity_main.xml</b>에 구성되어 있고, app2app 연동 관련 기능은 <b>ContentViewModel</b>에 구현되어 있습니다.
 
 # 시작하기
@@ -106,7 +107,8 @@ SDK를 사용하는 네이티브 앱에서는 매니페스트에 인터넷 권�
 - CONNECT_WALLET : 지갑연결.
 - SIGN_MESSAGE : 메시지 서명.
 - SEND_COIN : 코인 전송.
-- EXECUTE_CONTRACT : 컨트랙트함수 실행.
+- ~EXECUTE_CONTRACT : 컨트랙트함수 실행.~ (1.0.4 이하)
+- EXECUTE_CONTRACT_WITH_ENCODED : 컨트랙트함수 실행 (1.0.5 이상)
 
 #### App2AppStatus
 - REQUESTED : app2app으로 수행할 액션 데이터를 요청한 상태.
@@ -121,9 +123,8 @@ SDK를 사용하는 네이티브 앱에서는 매니페스트에 인터넷 권�
 ```kotlin
 val app2appComponent: App2AppComponent = App2AppComponent()
 ```
-네이티브 앱에서 app2app SDK의 기능을 호출하려면 App2AppComponent 인스턴스를 생성해야 합니다. App2AppComponent를 통해서만 사용 가능하기 때문입니다. 
-그리고 App2AppComponent의 요청 및 결과 함수는 Coroutine Suspend Function으로 구현되어 있습니다.
-따라서 네이티브 앱에서 해당 함수를 호출할 때에는 Coroutine Scope을 생성해야 합니다.
+app2app SDK의 모든 기능은 App2AppComponent를 통해서만 사용해야 합니다. 
+App2AppComponent의 요청 및 결과 함수는 Coroutine Suspend Function으로 구현되어 있으므로, 네이티브 앱에서 해당 함수를 호출할 때에는 Coroutine Scope을 생성해야 합니다.
 
 예시
 ```kotlin
@@ -134,7 +135,7 @@ viewModelScope.launch(Dispatchers.IO) {
 ...
 ```
 
-혹은 다양한 방법으로 스코프를 생성해서 호출할 수도 있습니다.
+혹은 다양한 방법으로 Scope 를 생성해서 호출할 수도 있습니다.
 
 예시
 ```kotlin
@@ -187,8 +188,8 @@ val request = App2AppSendCoinRequest(
     chainId = 8217,
     blockChainApp = App2AppBlockChainApp(
         name = "App2App Sample",
-        successAppLink = "",
-        failAppLink = "",
+        successAppLink = "",                // 지원예정
+        failAppLink = "",                   // 지원예정
     ),
     transactions = listOf(                  // 실행할 트랜잭션 리스트. (단, 현재는 1개의 트랜잭션만 처리.)
         App2AppTransaction(
@@ -202,7 +203,12 @@ val response = app2AppComponent.requestSendCoin(request)
 val requestId = response.requestId
 ```
 
-#### 컨트랙트함수 실행
+#### 컨트랙트함수 실행 (1.0.5 이상)
+
+##### 기존 functionName, ABI, parameters 데이터를 전달하는 방식에서, 인코딩된 함수 데이터를 전달하는 방식으로 변경.
+##### 인코딩된 함수데이터
+###### 예시) 0x095ea7b30000000000000000000000001f6d738ec0cf07a451af55b73bc610edb20c546c0000000000000000000000000000000000000000000000000000000000000000
+###### 참고) [Web3j.Transacting with a smart contract](https://docs.web3j.io/4.9.7/transactions/transactions_and_smart_contracts/#transacting-with-a-smart-contract)
 
 ```kotlin
 val request = App2AppExecuteContractRequest(
@@ -210,16 +216,15 @@ val request = App2AppExecuteContractRequest(
     chainId = 8217,
     blockChainApp = App2AppBlockChainApp(
         name = "App2App Sample",
-        successAppLink = "",
-        failAppLink = "",
+        successAppLink = "",                // 지원예정
+        failAppLink = "",                   // 지원예정
     ),
     transactions = listOf(                  // 실행할 트랜잭션 리스트. (단, 현재는 1개의 트랜잭션만 처리.)
         App2AppTransaction(
             from = "0x123...456",           // 트랜잭션을 전송할 지갑 주소.
             to = "0x654...321",             // 컨트랙트 주소.
-            data = "0xa9059cbb...0000",     // 실행할 함수의 Input.
+            data = "0xa9059cbb...0000",     // 인코딩된 함수데이터.
             value = "0",                    // 보낼 코인 수량. (단위: peb) 단, non-payable 함수인 경우에는 0으로 지정해야 함.
-            functionName = "transferFrom",   // 실행할 함수명.
             gasLimit = "100000"             // 가스 리밋. (Optional - 이 값을 지정해서 보낼 경우, FAVORLET 에서는 이 값으로 설정)
         )
     )
@@ -229,7 +234,7 @@ val requestId = response.requestId
 ```
 
 
-> #### ❗️ abi 및 params를 사용하는 아래의 방법은 Deprecated 되었습니다. 위에서 기재된 방법으로 사용하여야 합니다.
+> #### ❗️ 기존 컨트랙트실행 (executeContract) 은 1.0.4 이하 버전만 지원
 > ~val request = App2AppExecuteContractRequest(<br>
     action = App2AppAction.EXECUTE_CONTRACT.value,<br>
     chainId = 8217,<br>
@@ -345,7 +350,8 @@ app2AppComponent.receipt(requestId)
 }
 ```
 
-#### 컨트랙트함수 실행 (executeContract)
+
+#### 컨트랙트함수 실행 (executeContractWithEncoded) (1.0.5 이상)
 - requestId (String) : 요청ID.
 - expiredAt (Int) : 요청 만료시간.
 - action (String) : 액션.
@@ -353,6 +359,30 @@ app2AppComponent.receipt(requestId)
 - transactions (List<App2AppReceiptResponse.Transaction>) : 컨트랙트 함수 실행 관련 트랜잭션 정보.
 - - status (String) : 상태.
 - - txHash (String) : 트랜잭션 해시.
+
+예시
+```json
+  {
+  "requestId": "278183ab-d3cb-4563-b0d4-ece1a2559f03",
+  "expiredAt": 1664341448,
+  "action": "executeContractWithEncoded",
+  "transactions": [
+    {
+      "status": "succeed",
+      "txHash": "0x123...123"
+    }
+  ]
+}
+```
+
+~#### 컨트랙트함수 실행 (executeContract)~ (1.0.4 이하)
+~- requestId (String) : 요청ID.
+- expiredAt (Int) : 요청 만료시간.
+- action (String) : 액션.
+- chainId (Int) : FAVORLET과 연동된 체인ID.
+- transactions (List<App2AppReceiptResponse.Transaction>) : 컨트랙트 함수 실행 관련 트랜잭션 정보.
+- - status (String) : 상태.
+- - txHash (String) : 트랜잭션 해시.~
 
 예시
 ```json
@@ -371,7 +401,7 @@ app2AppComponent.receipt(requestId)
 
 
 # 제약사항
-23.01.20 기준
+23.04.13 기준
 
 #### app2app 트랜잭션
 - 설계는 복수 트랜잭션 처리가 고려되어 있으나, 현재는 1개의 트랜잭션만 처리.
@@ -380,7 +410,13 @@ app2AppComponent.receipt(requestId)
 
 # 변경사항
 
-### 1.0.4 (22.01.20)
+### 1.0.5 (23.04.13)
+
+#### 기존 컨트랙트함수 실행 (executeContract) 삭제
+#### 신규 컨트랙트함수 실행 (executeContractWithEncoded) 추가
+
+
+### 1.0.4 (23.01.20)
 
 #### 멀티 체인 지원
 - 기존의 클레이튼 메인넷 (8217) 외에 아래에 정의된 체인을 지원합니다.
