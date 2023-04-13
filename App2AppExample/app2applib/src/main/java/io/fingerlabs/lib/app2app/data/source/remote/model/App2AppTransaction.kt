@@ -14,11 +14,20 @@ data class App2AppTransaction(
     @SerialName("value")
     val value: String? = null,
 
-    @SerialName("data")
-    val data: String? = null,
+    @Deprecated("1.0.5 이상부터는 지원하지 않습니다.")
+    @SerialName("abi")
+    val abi: String? = null,
 
+    @Deprecated("1.0.5 이상부터는 지원하지 않습니다.")
+    @SerialName("params")
+    val params: String? = null,
+
+    @Deprecated("1.0.5 이상부터는 지원하지 않습니다.")
     @SerialName("functionName")
     val functionName: String? = null,
+
+    @SerialName("data")
+    val data: String? = null,
 
     @SerialName("gasLimit")
     val gasLimit: String? = null
