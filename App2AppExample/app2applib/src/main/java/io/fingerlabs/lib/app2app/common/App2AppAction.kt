@@ -4,5 +4,5 @@ enum class App2AppAction(val value: String) {
     CONNECT_WALLET(value = "connectWallet"),
     SIGN_MESSAGE(value = "signMessage"),
     SEND_COIN(value = "sendCoin"),
-    EXECUTE_CONTRACT(value = "executeContractWithEncoded"),
+    EXECUTE_CONTRACT_WITH_ENCODED(value = "executeContractWithEncoded")
 }

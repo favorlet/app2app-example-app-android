@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
             resultSendCoin.observe(this@MainActivity, EventObserver{
                 binding.textSendCoinResult.text = it
             })
-            resultExecuteContract.observe(this@MainActivity, EventObserver{
-                binding.textExecuteContractResult.text = it
+            resultExecuteContractWithEncoded.observe(this@MainActivity, EventObserver{
+                binding.textExecuteContractWithEncodedResult.text = it
             })
             progress.observe(this@MainActivity, EventObserver {
                 binding.progress.visibility = if (it) View.VISIBLE else View.GONE
@@ -69,12 +69,10 @@ class MainActivity : AppCompatActivity() {
             editCoinAmount.setText(latestCoinAmount)
 
             // 컨트랙트 실행
-            val latestContractAddress = sharedUtil.loadStringValue(Constant.NAME_EXECUTE_CONTRACT_ADDRESS, "0x...")
+            val latestContractAddress = sharedUtil.loadStringValue(Constant.NAME_EXECUTE_CONTRACT_ADDRESS, "")
             editContractAddress.setText(latestContractAddress)
-            val latestData = sharedUtil.loadStringValue(Constant.NAME_EXECUTE_CONTRACT_DATA, "default")
+            val latestData = sharedUtil.loadStringValue(Constant.NAME_EXECUTE_CONTRACT_DATA, "")
             editData.setText(latestData)
-            val latestFunctionName = sharedUtil.loadStringValue(Constant.NAME_EXECUTE_CONTRACT_FUNCTION, "transfer")
-            editFunctionName.setText(latestFunctionName)
             val latestAmount = sharedUtil.loadStringValue(Constant.NAME_EXECUTE_CONTRACT_AMOUNT, "0")
             editAmount.setText(latestAmount)
             val latestGasLimit = sharedUtil.loadStringValue(Constant.NAME_EXECUTE_CONTRACT_GAS_LIMIT, "")
@@ -102,19 +100,17 @@ class MainActivity : AppCompatActivity() {
                 sharedUtil.saveStringValue(Constant.NAME_SEND_COIN_AMOUNT, amount)
                 mainViewModel.requestSendCoin(chainId, toAddress, amount)
             }
-            btnExecuteContract.setOnClickListener {
+            btnExecuteContractWithEncoded.setOnClickListener {
                 val chainId = editChainId.text.toString().toInt()
                 val contractAddress = editContractAddress.text.toString()
                 val data = editData.text.toString()
                 val value = editAmount.text.toString()
-                val functionName = editFunctionName.text.toString()
                 val gasLimit = editGasLimit.text.toString()
                 sharedUtil.saveStringValue(Constant.NAME_EXECUTE_CONTRACT_ADDRESS, contractAddress)
                 sharedUtil.saveStringValue(Constant.NAME_EXECUTE_CONTRACT_DATA, data)
                 sharedUtil.saveStringValue(Constant.NAME_EXECUTE_CONTRACT_AMOUNT, value)
-                sharedUtil.saveStringValue(Constant.NAME_EXECUTE_CONTRACT_FUNCTION, functionName)
                 sharedUtil.saveStringValue(Constant.NAME_EXECUTE_CONTRACT_GAS_LIMIT, gasLimit)
-                mainViewModel.requestExecuteContract(chainId, contractAddress, data,  value, functionName, gasLimit)
+                mainViewModel.requestExecuteContractWithEncoded(chainId, contractAddress, data,  value, gasLimit)
             }
         }
     }

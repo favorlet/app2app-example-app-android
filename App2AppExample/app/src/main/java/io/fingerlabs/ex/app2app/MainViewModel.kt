@@ -19,7 +19,7 @@ class MainViewModel constructor(
     val connectedAddress = MutableLiveData<String>()
     val signatureHash = MutableLiveData<String>()
     val resultSendCoin = MutableLiveData<Event<String>>()
-    val resultExecuteContract = MutableLiveData<Event<String>>()
+    val resultExecuteContractWithEncoded = MutableLiveData<Event<String>>()
 
     val progress = MutableLiveData<Event<Boolean>>()
     val isConnectedWallet = MutableLiveData<Event<Boolean>>()
@@ -123,19 +123,18 @@ class MainViewModel constructor(
     }
 
 
-    fun requestExecuteContract(
+    fun requestExecuteContractWithEncoded(
         chainId: Int,
         contractAddress: String,
         data: String,
         value: String,
-        functionName: String,
         gasLimit: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             progress.postValue(Event(true))
             runCatching {
                 val request = App2AppExecuteContractRequest(
-                    action = App2AppAction.EXECUTE_CONTRACT.value,
+                    action = App2AppAction.EXECUTE_CONTRACT_WITH_ENCODED.value,
                     chainId = chainId,
                     blockChainApp = App2AppBlockChainApp(
                         name = "App2App Sample",
@@ -148,7 +147,6 @@ class MainViewModel constructor(
                             to = contractAddress,
                             data = data,
                             value = value,
-                            functionName = functionName,
                             gasLimit = gasLimit.ifEmpty { null }
                         )
                     )
@@ -207,11 +205,11 @@ class MainViewModel constructor(
                             resultSendCoin.postValue(Event(status))
                         }
                     }
-                    App2AppAction.EXECUTE_CONTRACT.value -> {
+                    App2AppAction.EXECUTE_CONTRACT_WITH_ENCODED.value -> {
                         // 컨트랙트 실행
                         if (it.transactions?.first()?.status == App2AppStatus.SUCCEED.value) {
                             val status = it.transactions?.first()?.status ?: "-"
-                            resultExecuteContract.postValue(Event(status))
+                            resultExecuteContractWithEncoded.postValue(Event(status))
                         }
                     }
                     else -> {}
