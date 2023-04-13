@@ -59,8 +59,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common:2.5.1"
 
     // FAVORLET app2app
-//    implementation project(":app2applib") // Local
-    implementation "com.github.fingerlabs.favorlet-app2app-sdk-android:favorlet-app2app-lib:1.0.4"  // Remote (Jitpack)
+    implementation project(":app2applib") // Local
+//    implementation "com.github.fingerlabs.favorlet-app2app-sdk-android:favorlet-app2app-lib:1.0.4"  // Remote (Jitpack)
 }
 
 kapt {

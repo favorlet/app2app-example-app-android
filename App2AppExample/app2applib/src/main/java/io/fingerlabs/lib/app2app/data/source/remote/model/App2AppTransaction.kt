@@ -14,11 +14,8 @@ data class App2AppTransaction(
     @SerialName("value")
     val value: String? = null,
 
-    @SerialName("abi")
-    val abi: String? = null,
-
-    @SerialName("params")
-    val params: String? = null,
+    @SerialName("data")
+    val data: String? = null,
 
     @SerialName("functionName")
     val functionName: String? = null,

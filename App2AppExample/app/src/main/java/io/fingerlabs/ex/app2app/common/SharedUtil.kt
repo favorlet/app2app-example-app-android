@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 
 class SharedUtil(private val context: Context) {
-    private val NAME = "app2appSample"
+
+    companion object {
+        private const val NAME = "app2appSample"
+    }
 
     fun saveIntValue(key: String, value: Int) {
         context.getSharedPreferences(NAME, MODE_PRIVATE).apply {

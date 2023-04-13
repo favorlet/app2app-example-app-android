@@ -5,6 +5,7 @@
 
 
     <data>
+
         <variable
             name="viewModel"
             type="io.fingerlabs.ex.app2app.MainViewModel" />
@@ -55,7 +56,8 @@
                         android:id="@+id/editChainId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"/>
+                        android:inputType="number"
+                        android:hint="ex) 8217"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -114,7 +116,8 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editMessage"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:hint="ex) favorlet"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSignMessage"
@@ -164,7 +167,8 @@
                         android:id="@+id/editTo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="" />
+                        android:text=""
+                        android:hint="ex) 0x{hex}"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -178,7 +182,8 @@
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
                         android:maxLines="1"
-                        android:text="" />
+                        android:text=""
+                        android:hint="ex) 1000000000000000000"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSendCoin"
@@ -200,7 +205,7 @@
                         android:layout_marginTop="5dp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <!--컨트랙트 실행 (ExecuteContract)-->
+                <!--컨트랙트 실행 (ExecuteContractWithEncoded)-->
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/layoutExecuteContract"
                     android:layout_width="match_parent"
@@ -213,7 +218,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="컨트랙트 실행 (executeContract)"
+                        android:text="컨트랙트 실행 (executeContractWithEncoded)"
                         android:textColor="@color/black"
                         android:textSize="17dp"
                         android:textStyle="bold" />
@@ -227,42 +232,21 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editContractAddress"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:hint="ex) 0x{hex}"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="ABI" />
+                        android:text="Data  *인코딩된 함수데이터" />
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/editABI"
+                        android:id="@+id/editData"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxHeight="300dp" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="파라미터" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/editParams"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="[]" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="함수명" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/editFunctionName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:maxHeight="300dp"
+                        android:hint="ex) 0x{hex}"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -275,7 +259,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:text="0" />
+                        android:text=""
+                        android:hint="ex) 0"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -291,7 +276,7 @@
                         android:text="" />
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnExecuteContract"
+                        android:id="@+id/btnExecuteContractWithEncoded"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="실행하기"
@@ -304,7 +289,7 @@
                         android:text="결과" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textExecuteContractResult"
+                        android:id="@+id/textExecuteContractWithEncodedResult"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp" />
