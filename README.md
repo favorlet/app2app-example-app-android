@@ -67,7 +67,7 @@ dependencyResolutionManagement {
 ```groovy
 dependencies {
     ...
-    implementation "com.github.fingerlabs.favorlet-app2app-sdk-android:favorlet-app2app-lib:1.0.5"
+    implementation 'com.github.fingerlabs:favorlet-app2app-sdk-android:1.0.5'
     
 }
 ```
