@@ -24,6 +24,9 @@ data class App2AppReceiptResponse(
     @SerialName("signMessage")
     val signMessage: SignMessage? = null,
 
+    @SerialName("connectWalletAndSignMessage")
+    val connectWalletAndSignMessage: ConnectWalletAndSignMessage? = null,
+
     @SerialName("transactions")
     val transactions: List<Transaction>? = null,
 
@@ -47,6 +50,21 @@ data class App2AppReceiptResponse(
     data class SignMessage(
         @SerialName("status")
         val status: String? = null,
+
+        @SerialName("signature")
+        val signature: String? = null,
+
+        @SerialName("errorMessage")
+        val errorMessage: String? = null,
+    )
+
+    @Serializable
+    data class ConnectWalletAndSignMessage(
+        @SerialName("status")
+        val status: String? = null,
+
+        @SerialName("address")
+        val address: String? = null,
 
         @SerialName("signature")
         val signature: String? = null,

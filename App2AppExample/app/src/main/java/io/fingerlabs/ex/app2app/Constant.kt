@@ -1,12 +1,9 @@
 package io.fingerlabs.ex.app2app
 
 object Constant {
-    object BaseUrl {
-        const val APP2APP = "bridge.favorlet.link"
-    }
-
     const val NAME_CHAIN_ID = "chain_id"
     const val NAME_MESSAGE = "message"
+    const val NAME_MESSAGE_2 = "message2"
     const val NAME_SEND_COIN_TO = "send_coin_to"
     const val NAME_SEND_COIN_AMOUNT = "send_coin_amount"
     const val NAME_EXECUTE_CONTRACT_ADDRESS = "execute_contract_address"

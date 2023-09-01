@@ -1,5 +1,6 @@
 package io.fingerlabs.lib.app2app.data.repository
 
+import android.util.Log
 import io.fingerlabs.lib.app2app.data.source.remote.api.App2AppApi
 import io.fingerlabs.lib.app2app.data.source.remote.model.*
 
@@ -24,6 +25,16 @@ internal class App2AppRepository constructor(
         request: App2AppSignMessageRequest
     ): App2AppRequestResponse {
         return app2appApi.requestSignMessage(request)
+    }
+
+
+    /**
+     * 지갑 연결 & 메시지 서명 요청.
+     */
+    suspend fun requestConnectWalletSignMessage(
+        request: App2AppConnectWalletAndSignMessageRequest
+    ): App2AppRequestResponse {
+        return app2appApi.requestConnectWalletSignMessage(request)
     }
 
 

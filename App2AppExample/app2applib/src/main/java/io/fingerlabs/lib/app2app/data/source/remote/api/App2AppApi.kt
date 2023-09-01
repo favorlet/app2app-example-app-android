@@ -19,6 +19,11 @@ internal class App2AppApi constructor(
     ): App2AppRequestResponse =
         httpClient.post(path = "/request", body = request)
 
+    suspend fun requestConnectWalletSignMessage(
+        request: App2AppConnectWalletAndSignMessageRequest
+    ): App2AppRequestResponse =
+        httpClient.post(path = "/request", body = request)
+
     suspend fun requestSendCoin(
         request: App2AppSendCoinRequest
     ): App2AppRequestResponse =

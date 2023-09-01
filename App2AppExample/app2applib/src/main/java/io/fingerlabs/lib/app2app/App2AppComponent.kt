@@ -11,6 +11,7 @@ class App2AppComponent {
     private var requestExecuteContractUseCase = RequestExecuteContractUseCase()
     private var executeUseCase = ExecuteUseCase()
     private var receiptUseCase = ReceiptUseCase()
+    private val requestConnectWalletAndSignMessageUseCase = RequestConnectWalletAndSignMessageUseCase()
 
 
     suspend fun requestConnectWallet(
@@ -21,6 +22,11 @@ class App2AppComponent {
     suspend fun requestSignMessage(
         request: App2AppSignMessageRequest
     ): App2AppRequestResponse = requestSignMessageUseCase.invoke(request)
+
+
+    suspend fun requestConnectWalletAndSignMessage(
+        request: App2AppConnectWalletAndSignMessageRequest
+    ): App2AppRequestResponse = requestConnectWalletAndSignMessageUseCase.invoke(request)
 
 
     suspend fun requestSendCoin(

@@ -7,13 +7,15 @@ FAVORLET은 NFT의 활용성을 극대화시키는 NFT 전용 지갑입니다. N
 
 - 지갑연결 (connectWallet)
 - 메시지 서명 (signMessage)
+- 지갑연결 & 메시지 서명 (connectWalletAndSignMessage)
 - 코인 전송 (sendCoin)
 - ~컨트랙트함수 실행 (executeContract)~ (1.0.4 이하)
 - 컨트랙트함수 실행 (executeContractWithEncoded) (1.0.5 이상)
 
-FAVORLET의 app2app은 4가지의 기능을 제공합니다. 
+FAVORLET의 app2app은 5가지의 기능을 제공합니다. 
 <b>지갑연결</b>은 사용자의 지갑 주소를 네이티브 앱에 가져오기 위한 기능으로, 지갑 주소가 있으면 블록체인 상의 존재하는 지갑 관련 데이터를 조회할 수 있습니다.
 <b>메시지 서명</b>은 네이티브 앱에서 지정한 메시지를 서명하여, 지갑의 소유권 확인이나, 인증/승인의 역할을 할 수 있는 기능입니다.
+<b>지갑연결 & 메시지 서명</b>위 지갑연결과 메세지서명을 한 액션으로 실행할 수 있는 기능입니다.
 <b>코인 전송</b>은 체인의 플랫폼 코인을 전송하는 기능입니다. 받을 지갑 주소와 수량을 지정하여 전송하실 수 있습니다. 
 <b>컨트랙트함수 실행</b>은 지정된 컨트랙트 함수를 실행하는 기능으로, 함수에 따라 다양한 기능을 수행할 수 있습니다.
 
@@ -106,6 +108,7 @@ SDK를 사용하는 네이티브 앱에서는 매니페스트에 인터넷 권�
 #### App2AppAction
 - CONNECT_WALLET : 지갑연결.
 - SIGN_MESSAGE : 메시지 서명.
+- CONNECT_WALLET_AND_SIGN_MESSAGE : 지갑연결 & 메시지 서명.
 - SEND_COIN : 코인 전송.
 - ~EXECUTE_CONTRACT : 컨트랙트함수 실행.~ (1.0.4 이하)
 - EXECUTE_CONTRACT_WITH_ENCODED : 컨트랙트함수 실행 (1.0.5 이상)
@@ -178,6 +181,22 @@ val request = App2AppSignMessageRequest(
     )
 )
 val response = app2AppComponent.requestSignMessage(request)
+val requestId = response.requestId
+```
+
+#### 지갑연결 & 메시지 서명
+```kotlin
+val request = App2AppConnectWalletAndSignMessageRequest(
+    action = App2AppAction.CONNECT_WALLET_AND_SIGN_MESSAGE.value,
+    chainId = chainId,
+    blockChainApp = App2AppBlockChainApp(
+        name = "App2App Sample",
+    ),
+    connectWalletAndSignMessage = App2AppConnectWalletAndSignMessage(
+        value = message,
+    )
+)
+val response = app2AppComponent.requestConnectWalletAndSignMessage(request)
 val requestId = response.requestId
 ```
 
@@ -325,6 +344,30 @@ app2AppComponent.receipt(requestId)
 }
 ```
 
+#### 지갑연결 & 메시지 서명 (connectWalletAndSignMessage)
+- requestId (String) : 요청ID.
+- expiredAt (Int) : 요청 만료시간.
+- action (String) : 액션.
+- chainId (Int) : FAVORLET과 연동된 체인ID.
+- connectWalletAndSignMessage (App2AppReceiptResponse.ConnectWalletAndSignMessage) : 지갑연결 & 메시지 서명 정보.
+- - status (String) : 상태.
+- - address (String) : 연결된 지갑 주소.
+- - signature (String) : 메시지 해시값.
+
+예시
+```json
+{
+  "requestId": "879855c2-fd2e-4ac9-bc11-2939b7ca9697",
+  "expiredAt": 1664341330,
+  "action": "connectWalletAndSignMessage",
+  "connectWalletAndSignMessage": {
+    "status": "succeed",
+    "address": "0x123...123"
+    "signature": "0xasdkasldjwqevnwrejkqwkeqlwkejq"
+  }
+}
+```
+
 #### 코인 전송 (sendCoin)
 - requestId (String) : 요청ID.
 - expiredAt (Int) : 요청 만료시간.
@@ -413,6 +456,7 @@ app2AppComponent.receipt(requestId)
 
 #### 기존 컨트랙트함수 실행 (executeContract) 삭제
 #### 신규 컨트랙트함수 실행 (executeContractWithEncoded) 추가
+#### 신규 지갑연결 & 메세지 서명 (connectWalletAndSignMessage) 추가
 
 
 ### 1.0.4 (23.01.20)

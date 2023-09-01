@@ -139,6 +139,63 @@
                         android:layout_marginTop="5dp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <!-- 지갑연결 & 메시지 서명 (SignMessage)-->
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/layoutConnectWalletSignMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="#ededed"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="지갑연결 &amp; 메시지 서명 (signMessage)"
+                        android:textColor="@color/black"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="메시지 원본" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editMessage2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="ex) favorlet"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnConnectWalletSignMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="지갑연결 및 서명하기"
+                        android:textAllCaps="false" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="결과" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textConnectedAddress2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textSignature2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <!--코인전송 (SendCoin)-->
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/layoutSendCoin"

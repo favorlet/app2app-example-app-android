@@ -1,6 +1,7 @@
 package io.fingerlabs.ex.app2app
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +19,8 @@ class MainViewModel constructor(
     val app2AppRequestId = MutableLiveData<Event<String>>()
     val connectedAddress = MutableLiveData<String>()
     val signatureHash = MutableLiveData<String>()
+    val connectedAddress2 = MutableLiveData<String>()
+    val signatureHash2 = MutableLiveData<String>()
     val resultSendCoin = MutableLiveData<Event<String>>()
     val resultExecuteContractWithEncoded = MutableLiveData<Event<String>>()
 
@@ -42,6 +45,7 @@ class MainViewModel constructor(
                 )
                 app2AppComponent.requestConnectWallet(request)
             }.onSuccess {
+
                 if (it.err == null && !(it.requestId.isNullOrEmpty())) {
                     app2AppRequestId.postValue(Event(it.requestId!!))
                     isConnectedWallet.postValue(Event(true))
@@ -74,6 +78,39 @@ class MainViewModel constructor(
                     )
                 )
                 app2AppComponent.requestSignMessage(request)
+            }.onSuccess {
+                if (it.err == null && !(it.requestId.isNullOrEmpty())) {
+                    app2AppRequestId.postValue(Event(it.requestId!!))
+                } else if (it.err != null) {
+                    errorToast.postValue(Event("[${it.err?.code}] ${it.err?.errorMessage}"))
+                }
+                progress.postValue(Event(false))
+            }.onFailure {
+                progress.postValue(Event(false))
+            }
+        }
+    }
+
+
+    fun requestConnectWalletSignMessage(chainId: Int, message: String) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            progress.postValue(Event(true))
+            runCatching {
+
+                val request = App2AppConnectWalletAndSignMessageRequest(
+                    action = App2AppAction.CONNECT_WALLET_AND_SIGN_MESSAGE.value,
+                    chainId = chainId,
+                    blockChainApp = App2AppBlockChainApp(
+                        name = "App2App Sample",
+                        successAppLink = "",
+                        failAppLink = "",
+                    ),
+                    connectWalletAndSignMessage = App2AppConnectWalletAndSignMessage(
+                        value = message,
+                    )
+                )
+                app2AppComponent.requestConnectWalletAndSignMessage(request)
             }.onSuccess {
                 if (it.err == null && !(it.requestId.isNullOrEmpty())) {
                     app2AppRequestId.postValue(Event(it.requestId!!))
@@ -177,10 +214,12 @@ class MainViewModel constructor(
         viewModelScope.launch(Dispatchers.IO) {
             if (app2AppRequestId.value?.peekContent().isNullOrEmpty()) return@launch
             progress.postValue(Event(true))
-            val requestId = app2AppRequestId.value?.getContentIfNotHandled()
+            val requestId = app2AppRequestId.value?.peekContent()
+
             runCatching {
                 requestId?.let { app2AppComponent.receipt(it) }
             }.onSuccess {
+
                 when (it?.action) {
                     App2AppAction.CONNECT_WALLET.value -> {
                         // 지갑연결
@@ -191,6 +230,7 @@ class MainViewModel constructor(
                             receivedChainId.postValue(chainId)
                         }
                     }
+
                     App2AppAction.SIGN_MESSAGE.value -> {
                         // 메시지 서명
                         if (it.signMessage?.status == App2AppStatus.SUCCEED.value) {
@@ -198,6 +238,19 @@ class MainViewModel constructor(
                             signatureHash.postValue(signature)
                         }
                     }
+
+                    App2AppAction.CONNECT_WALLET_AND_SIGN_MESSAGE.value -> {
+                        //지갑연결 & 메세지 서명
+                        if (it.connectWalletAndSignMessage?.status == App2AppStatus.SUCCEED.value) {
+
+                            val address = it.connectWalletAndSignMessage?.address ?: "-"
+                            val signature = it.connectWalletAndSignMessage?.signature ?: "-"
+
+                            connectedAddress2.postValue(address)
+                            signatureHash2.postValue(signature)
+                        }
+                    }
+
                     App2AppAction.SEND_COIN.value -> {
                         // 코인 전송
                         if (it.transactions?.first()?.status == App2AppStatus.SUCCEED.value) {
@@ -205,6 +258,7 @@ class MainViewModel constructor(
                             resultSendCoin.postValue(Event(status))
                         }
                     }
+
                     App2AppAction.EXECUTE_CONTRACT_WITH_ENCODED.value -> {
                         // 컨트랙트 실행
                         if (it.transactions?.first()?.status == App2AppStatus.SUCCEED.value) {
@@ -212,6 +266,7 @@ class MainViewModel constructor(
                             resultExecuteContractWithEncoded.postValue(Event(status))
                         }
                     }
+
                     else -> {}
                 }
                 if (it != null) {

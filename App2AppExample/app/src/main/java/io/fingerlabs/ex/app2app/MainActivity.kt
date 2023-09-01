@@ -35,6 +35,12 @@ class MainActivity : AppCompatActivity() {
             signatureHash.observe(this@MainActivity) {
                 binding.textSignature.text = it
             }
+            connectedAddress2.observe(this@MainActivity) {
+                binding.textConnectedAddress2.text = it
+            }
+            signatureHash2.observe(this@MainActivity) {
+                binding.textSignature2.text = it
+            }
             resultSendCoin.observe(this@MainActivity, EventObserver{
                 binding.textSendCoinResult.text = it
             })
@@ -61,6 +67,10 @@ class MainActivity : AppCompatActivity() {
             // 메시지 서명
             val latestMessage = sharedUtil.loadStringValue(Constant.NAME_MESSAGE, "favorlet")
             editMessage.setText(latestMessage)
+
+            // 지갑연결 & 메세지 서명
+            val latestMessage2 = sharedUtil.loadStringValue(Constant.NAME_MESSAGE_2, "favorlet")
+            editMessage2.setText(latestMessage2)
 
             // 코인 전송
             val latestToAddress = sharedUtil.loadStringValue(Constant.NAME_SEND_COIN_TO, "0x...")
@@ -91,6 +101,12 @@ class MainActivity : AppCompatActivity() {
                 val message = editMessage.text.toString()
                 sharedUtil.saveStringValue(Constant.NAME_MESSAGE, message)
                 mainViewModel.requestSignMessage(chainId, message)
+            }
+            btnConnectWalletSignMessage.setOnClickListener {
+                val chainId = editChainId.text.toString().toInt()
+                val message = editMessage2.text.toString()
+                sharedUtil.saveStringValue(Constant.NAME_MESSAGE_2, message)
+                mainViewModel.requestConnectWalletSignMessage(chainId, message)
             }
             btnSendCoin.setOnClickListener {
                 val chainId = editChainId.text.toString().toInt()
