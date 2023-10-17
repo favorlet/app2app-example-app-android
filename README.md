@@ -6,14 +6,14 @@ FAVORLET은 NFT의 활용성을 극대화시키는 NFT 전용 지갑입니다. N
 ## 기능
 
 - 지갑연결 (connectWallet)
+- 지갑연결 및 메시지 서명 (connectWalletAndSignMessage)
 - 메시지 서명 (signMessage)
-- 지갑연결 & 메시지 서명 (connectWalletAndSignMessage)
 - 코인 전송 (sendCoin)
-- ~컨트랙트함수 실행 (executeContract)~ (1.0.4 이하)
-- 컨트랙트함수 실행 (executeContractWithEncoded) (1.0.5 이상)
+- 컨트랙트함수 실행 (executeContractWithEncoded)
 
 FAVORLET의 app2app은 5가지의 기능을 제공합니다. 
 <b>지갑연결</b>은 사용자의 지갑 주소를 네이티브 앱에 가져오기 위한 기능으로, 지갑 주소가 있으면 블록체인 상의 존재하는 지갑 관련 데이터를 조회할 수 있습니다.
+<b>지갑연결 및 메시지 서명</b>은 지갑을 연결하는 과정에서 메시지 서명까지 동시에 수행하는 기능입니다.
 <b>메시지 서명</b>은 네이티브 앱에서 지정한 메시지를 서명하여, 지갑의 소유권 확인이나, 인증/승인의 역할을 할 수 있는 기능입니다.
 <b>지갑연결 & 메시지 서명</b>위 지갑연결과 메세지서명을 한 액션으로 실행할 수 있는 기능입니다.
 <b>코인 전송</b>은 체인의 플랫폼 코인을 전송하는 기능입니다. 받을 지갑 주소와 수량을 지정하여 전송하실 수 있습니다. 
@@ -26,7 +26,7 @@ FAVORLET의 app2app은 5가지의 기능을 제공합니다.
 - 결과단계 (Receipt)
 
 FAVORLET의 app2app은 <b>요청-실행-결과</b>의 3단계로 동작합니다.
-<b>요청단계</b>는 네이티브 앱에서 수행하고자 하는 액션을 정의하는 단계입니다. 위에서 설명된 4가지의 기능 중 하나를 액션으로 지정할 수 있습니다. 
+<b>요청단계</b>는 네이티브 앱에서 수행하고자 하는 액션을 정의하는 단계입니다. 위에서 설명된 5가지의 기능 중 하나를 액션으로 지정할 수 있습니다. 
 <b>실행단계</b>는 요청 단계에서 지정한 액션을 FAVORLET이 실행하는 단계입니다. FAVORLET에 요청ID를 전달하면, FAVORLET이 해당 액션을 실행합니다. 
 <b>결과단계</b>는 FAVORLET에서 실행한 액션의 결과를 가져오는 단계입니다.
 즉, 다음과 같이 간단하게 정리할 수 있겠습니다.
@@ -69,7 +69,7 @@ dependencyResolutionManagement {
 ```groovy
 dependencies {
     ...
-    implementation 'com.github.fingerlabs:favorlet-app2app-sdk-android:1.0.5'
+    implementation 'com.github.fingerlabs:favorlet-app2app-sdk-android:1.1.0'
     
 }
 ```
@@ -108,10 +108,9 @@ SDK를 사용하는 네이티브 앱에서는 매니페스트에 인터넷 권�
 #### App2AppAction
 - CONNECT_WALLET : 지갑연결.
 - SIGN_MESSAGE : 메시지 서명.
-- CONNECT_WALLET_AND_SIGN_MESSAGE : 지갑연결 & 메시지 서명.
+- CONNECT_WALLET_AND_SIGN_MESSAGE : 지갑연결 및 메시지 서명.
 - SEND_COIN : 코인 전송.
-- ~EXECUTE_CONTRACT : 컨트랙트함수 실행.~ (1.0.4 이하)
-- EXECUTE_CONTRACT_WITH_ENCODED : 컨트랙트함수 실행 (1.0.5 이상)
+- EXECUTE_CONTRACT_WITH_ENCODED : 컨트랙트함수 실행.
 
 #### App2AppStatus
 - REQUESTED : app2app으로 수행할 액션 데이터를 요청한 상태.
@@ -157,12 +156,28 @@ app2app의 각 기능 별로 필요한 매개변수는 아래 예시와 같이 �
 ```kotlin
 val request = App2AppConnectWalletRequest(
     action = App2AppAction.CONNECT_WALLET.value,    // 액션.
-    chainId = 8217,                                 // 체인ID. (Optional - 지정하지 않을 경우 null)
+    chainId = 8217,                                 // 체인ID.
     blockChainApp = App2AppBlockChainApp(           // 네이티브 앱 정보.
-        name = "App2App Sample"                     // 네이티브 앱 이름. (FAVORLET app2app 연동화면에 표시될 앱 이름)
+        name = "App2App Sample"                     // 네이티브 앱 이름. (FAVORLET app2app 연동 화면에 표시될 앱 이름)
     )
 )
 val response = app2AppComponent.requestConnectWallet(request)
+val requestId = response.requestId
+```
+
+#### 지갑연결 & 메시지 서명
+```kotlin
+val request = App2AppConnectWalletAndSignMessageRequest(
+    action = App2AppAction.CONNECT_WALLET_AND_SIGN_MESSAGE.value,
+    chainId = 8217,
+    blockChainApp = App2AppBlockChainApp(
+        name = "App2App Sample",
+    ),
+    connectWalletAndSignMessage = App2AppConnectWalletAndSignMessage(
+        value = message,
+    )
+)
+val response = app2AppComponent.requestConnectWalletAndSignMessage(request)
 val requestId = response.requestId
 ```
 
@@ -184,21 +199,6 @@ val response = app2AppComponent.requestSignMessage(request)
 val requestId = response.requestId
 ```
 
-#### 지갑연결 & 메시지 서명
-```kotlin
-val request = App2AppConnectWalletAndSignMessageRequest(
-    action = App2AppAction.CONNECT_WALLET_AND_SIGN_MESSAGE.value,
-    chainId = chainId,
-    blockChainApp = App2AppBlockChainApp(
-        name = "App2App Sample",
-    ),
-    connectWalletAndSignMessage = App2AppConnectWalletAndSignMessage(
-        value = message,
-    )
-)
-val response = app2AppComponent.requestConnectWalletAndSignMessage(request)
-val requestId = response.requestId
-```
 
 #### 코인 전송
 ```kotlin
@@ -222,7 +222,7 @@ val response = app2AppComponent.requestSendCoin(request)
 val requestId = response.requestId
 ```
 
-#### 컨트랙트함수 실행 (1.0.5 이상)
+#### 컨트랙트함수 실행
 
 ##### 기존 functionName, ABI, parameters 데이터를 전달하는 방식에서, 인코딩된 함수 데이터를 전달하는 방식으로 변경.
 ##### - 인코딩된 함수데이터 예시) 0x095ea7b30000000000000000000000001f6d738ec0cf07a451af55b73bc610edb20c546c0000000000000000000000000000000000000000000000000000000000000000
@@ -250,33 +250,6 @@ val request = App2AppExecuteContractRequest(
 val response = app2AppComponent.requestExecuteContract(request)
 val requestId = response.requestId
 ```
-
-
-> #### ❗️ 기존 컨트랙트실행 (executeContract) 은 1.0.4 이하 버전만 지원
-> ~val request = App2AppExecuteContractRequest(<br>
-    action = App2AppAction.EXECUTE_CONTRACT.value,<br>
-    chainId = 8217,<br>
-    blockChainApp = App2AppBlockChainApp(<br>
-        name = "App2App Sample",<br>
-        successAppLink = "",<br>
-        failAppLink = "",<br>
-    ),<br>
-    transactions = listOf(                  // 실행할 트랜잭션 리스트. (단, 현재는 1개의 트랜잭션만 처리.)<br>
-        App2AppTransaction(<br>
-            from = "0x123...456",           // 트랜잭션을 전송할 지갑 주소.<br>
-            to = "0x654...321",             // 컨트랙트 주소.<br>
-            abi = "{\"inputs\":[{\"internalType\":\"address\",\"name\":\"src\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"dst\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"wad\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\",\"signature\":\"0x23b872dd\"}", // 실행할 함수의 ABI.<br>
-            value = "0",                    // 보낼 코인 수량. (단위: peb) 단, non-payable 함수인 경우에는 0으로 지정해야 함.<br>
-            params = "[\"0x123...456\", \"0x654...321\", 122]",     // 실행할 함수에 필요한 매개변수. JSONArray 문자열로 구성해야 함.<br>
-            functionName = "transferFrom",   // 실행할 함수명.<br>
-            gasLimit = "100000"             // 가스 리밋값. (Optional - 이 값을 지정해서 보낼 경우, FAVORLET 에서는 이 값으로 설정)<br>
-        )<br>
-    )<br>
-)<br>
-val response = app2AppComponent.requestExecuteContract(request)<br>
-val requestId = response.requestId~
-<br>
-
 
 ### 실행함수 호출
 
