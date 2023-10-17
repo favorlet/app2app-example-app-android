@@ -403,14 +403,14 @@ app2AppComponent.receipt(requestId)
 
 ### 1.1.0 (23.10.17)
 
-#### 지갑 연결 시 ChainId 필수값 처리
-#### 지갑 연결 및 메시지 서명 (connectWalletAndSignMessage) 액션 추가
+- 지갑 연결 시 ChainId 필수값 처리
+- 지갑 연결 및 메시지 서명 (connectWalletAndSignMessage) 액션 추가
 
 
 ### 1.0.5 (23.04.13)
 
-#### 기존 컨트랙트함수 실행 (executeContract) 삭제
-#### 신규 컨트랙트함수 실행 (executeContractWithEncoded) 추가
+- 기존 컨트랙트함수 실행 (executeContract) 삭제
+- 신규 컨트랙트함수 실행 (executeContractWithEncoded) 추가
 
 
 ### 1.0.4 (23.01.20)
