@@ -366,7 +366,7 @@ app2AppComponent.receipt(requestId)
 ```
 
 
-#### 컨트랙트함수 실행 (executeContractWithEncoded) (1.0.5 이상)
+#### 컨트랙트함수 실행 (executeContractWithEncoded)
 - requestId (String) : 요청ID.
 - expiredAt (Int) : 요청 만료시간.
 - action (String) : 액션.
@@ -390,30 +390,6 @@ app2AppComponent.receipt(requestId)
 }
 ```
 
-~#### 컨트랙트함수 실행 (executeContract)~ (1.0.4 이하)
-~- requestId (String) : 요청ID.
-- expiredAt (Int) : 요청 만료시간.
-- action (String) : 액션.
-- chainId (Int) : FAVORLET과 연동된 체인ID.
-- transactions (List<App2AppReceiptResponse.Transaction>) : 컨트랙트 함수 실행 관련 트랜잭션 정보.
-- - status (String) : 상태.
-- - txHash (String) : 트랜잭션 해시.~
-
-예시
-```json
-  {
-    "requestId": "278183ab-d3cb-4563-b0d4-ece1a2559f03",
-    "expiredAt": 1664341448,
-    "action": "executeContract",
-    "transactions": [
-        {
-            "status": "succeed",
-            "txHash": "0x123...123"
-        }
-    ]
-}
-```
-
 
 # 제약사항
 23.04.13 기준
@@ -425,11 +401,16 @@ app2AppComponent.receipt(requestId)
 
 # 변경사항
 
+### 1.1.0 (23.10.17)
+
+#### 지갑 연결 시 ChainId 필수값 처리
+#### 지갑 연결 및 메시지 서명 (connectWalletAndSignMessage) 액션 추가
+
+
 ### 1.0.5 (23.04.13)
 
 #### 기존 컨트랙트함수 실행 (executeContract) 삭제
 #### 신규 컨트랙트함수 실행 (executeContractWithEncoded) 추가
-#### 신규 지갑연결 & 메세지 서명 (connectWalletAndSignMessage) 추가
 
 
 ### 1.0.4 (23.01.20)
