@@ -92,22 +92,27 @@ class MainActivity : AppCompatActivity() {
                 val chainId: Int = try {
                     editChainId.text.toString().toInt()
                 } catch(error: Exception) {
-                    viewModel.showErrorToast("ChainId 를 입력해 주세요!")
+                    mainViewModel.showErrorToast("ChainId 를 입력해 주세요!")
                     return@setOnClickListener
                 }
                 mainViewModel.requestConnectWallet(chainId)
+            }
+            btnConnectWalletSignMessage.setOnClickListener {
+                val chainId: Int = try {
+                    editChainId.text.toString().toInt()
+                } catch(error: Exception) {
+                    mainViewModel.showErrorToast("ChainId 를 입력해 주세요!")
+                    return@setOnClickListener
+                }
+                val message = editMessage2.text.toString()
+                sharedUtil.saveStringValue(Constant.NAME_MESSAGE_2, message)
+                mainViewModel.requestConnectWalletSignMessage(chainId, message)
             }
             btnSignMessage.setOnClickListener {
                 val chainId = editChainId.text.toString().toInt()
                 val message = editMessage.text.toString()
                 sharedUtil.saveStringValue(Constant.NAME_MESSAGE, message)
                 mainViewModel.requestSignMessage(chainId, message)
-            }
-            btnConnectWalletSignMessage.setOnClickListener {
-                val chainId = editChainId.text.toString().toInt()
-                val message = editMessage2.text.toString()
-                sharedUtil.saveStringValue(Constant.NAME_MESSAGE_2, message)
-                mainViewModel.requestConnectWalletSignMessage(chainId, message)
             }
             btnSendCoin.setOnClickListener {
                 val chainId = editChainId.text.toString().toInt()
