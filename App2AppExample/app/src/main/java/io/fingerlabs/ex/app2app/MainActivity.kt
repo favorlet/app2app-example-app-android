@@ -89,10 +89,11 @@ class MainActivity : AppCompatActivity() {
             editGasLimit.setText(latestGasLimit)
 
             btnConnectWallet.setOnClickListener {
-                val chainId: Int? = try {
+                val chainId: Int = try {
                     editChainId.text.toString().toInt()
                 } catch(error: Exception) {
-                    null
+                    viewModel.showErrorToast("ChainId 를 입력해 주세요!")
+                    return@setOnClickListener
                 }
                 mainViewModel.requestConnectWallet(chainId)
             }

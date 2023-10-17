@@ -39,7 +39,7 @@ internal class App2AppRepository constructor(
 
 
     /**
-     * 코인전송 요청.
+     * 코인 전송 요청.
      */
     suspend fun requestSendCoin(
         request: App2AppSendCoinRequest

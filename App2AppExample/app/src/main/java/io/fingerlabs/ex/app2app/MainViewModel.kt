@@ -30,7 +30,7 @@ class MainViewModel constructor(
 
     val errorToast = MutableLiveData<Event<String>>()
 
-    fun requestConnectWallet(chainId: Int?) {
+    fun requestConnectWallet(chainId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             progress.postValue(Event(true))
             runCatching {
@@ -276,6 +276,13 @@ class MainViewModel constructor(
                 progress.postValue(Event(false))
             }
             progress.postValue(Event(false))
+        }
+    }
+
+
+    fun showErrorToast(message: String) {
+        viewModelScope.launch {
+            errorToast.postValue(Event(message))
         }
     }
 }
