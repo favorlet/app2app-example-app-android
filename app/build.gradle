@@ -60,7 +60,7 @@ dependencies {
 
     // FAVORLET app2app
     implementation project(":app2applib") // Local
-//    implementation "com.github.fingerlabs.favorlet-app2app-sdk-android:favorlet-app2app-lib:1.0.4"  // Remote (Jitpack)
+//    implementation "com.github.fingerlabs.favorlet-app2app-sdk-android:favorlet-app2app-lib:1.1.0"  // Remote (Jitpack)
 }
 
 kapt {
